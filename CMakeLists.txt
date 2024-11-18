@@ -20,6 +20,7 @@ endif()
 # Add executable files
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/model.cpp
 
     vendor/glad/src/glad.c
     vendor/imgui/imgui.cpp
