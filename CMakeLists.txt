@@ -22,6 +22,10 @@ add_executable(${PROJECT_NAME}
     src/EntryPoint.cpp
     src/Core/Render/Model.cpp
     src/Core/Debug/Logging.cpp
+    src/Core/Window/Window.cpp
+    src/Core/Render/Renderer.cpp
+    src/Core/Render/RendererAPI.cpp
+    src/Backends/OpenGL/OpenGLRenderer.cpp
 
     vendor/glad/src/glad.c
     vendor/imgui/imgui.cpp

@@ -1,8 +1,8 @@
 # 3D Game Chess
 
 ## Tasks need done
-- [ ] Add the spdlog for debugging code
-- [ ] Abstract the window application
+- [x] Add the spdlog for debugging code
+- [x] Abstract the window application
 - [ ] Abstract the camera controlling
 - [ ] Abstract the environment (lighting, background)
 - [ ] Abstract the renderering system (support muliple backend APIs)
