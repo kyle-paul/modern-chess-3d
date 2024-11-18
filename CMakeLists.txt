@@ -20,13 +20,23 @@ endif()
 # Add executable files
 add_executable(${PROJECT_NAME}
     src/main.cpp
+
     vendor/glad/src/glad.c
+    vendor/imgui/imgui.cpp
+    vendor/imgui/imgui_demo.cpp
+	vendor/imgui/imgui_draw.cpp
+	vendor/imgui/imgui_tables.cpp
+	vendor/imgui/imgui_widgets.cpp
+    vendor/imgui/backends/imgui_impl_opengl3.cpp
+    vendor/imgui/backends/imgui_impl_glfw.cpp
 )
 
 # Add included directories
 include_directories(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     vendor/glad/include
+    vendor/imgui
+    vendor/imgui/backends
     libs/glfw-build/install/include
 	libs/glm-build/install/include
 )
