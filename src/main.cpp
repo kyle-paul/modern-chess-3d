@@ -13,38 +13,71 @@
 #include <iostream>
 #include <cmath>
 
-float vertices[16 * 6] = {
-    -4.0, -4.0, 0.5, 0.55, 0.24, 0.09,
-    -4.0,  4.0, 0.5, 0.55, 0.24, 0.09,
-     4.0,  4.0, 0.5, 0.55, 0.24, 0.09,
-     4.0, -4.0, 0.5, 0.55, 0.24, 0.09,
-
-    -4.5, -4.5, 0.5, 0.55, 0.24, 0.09,
-    -4.5,  4.5, 0.5, 0.55, 0.24, 0.09,
-     4.5,  4.5, 0.5, 0.55, 0.24, 0.09,
-     4.5, -4.5, 0.5, 0.55, 0.24, 0.09,
-      
+float vertices[36 * 6] = {
+    // Base of the chessboard
     -5.0, -5.0, 0.0, 0.55, 0.24, 0.09,
     -5.0,  5.0, 0.0, 0.55, 0.24, 0.09,
      5.0,  5.0, 0.0, 0.55, 0.24, 0.09,
      5.0, -5.0, 0.0, 0.55, 0.24, 0.09,
 
+    // Top of the chessboard
     -4.0, -4.0, 0.5, 0.803, 0.522, 0.247,
     -4.5, -4.5, 0.5, 0.545, 0.271, 0.075,
     -4.5,  4.5, 0.5, 0.545, 0.271, 0.075,
     -4.0,  4.0, 0.5, 0.803, 0.522, 0.247,
+
+    -4.0,  4.0, 0.5, 0.803, 0.522, 0.247,
+    -4.5,  4.5, 0.5, 0.545, 0.271, 0.075,
+     4.5,  4.5, 0.5, 0.545, 0.271, 0.075,
+     4.0,  4.0, 0.5, 0.803, 0.522, 0.247,
+
+     4.0,  4.0, 0.5, 0.803, 0.522, 0.247,
+     4.5,  4.5, 0.5, 0.545, 0.271, 0.075,
+     4.5, -4.5, 0.5, 0.545, 0.271, 0.075,
+     4.0, -4.0, 0.5, 0.803, 0.522, 0.247,
+
+     4.0, -4.0, 0.5, 0.803, 0.522, 0.247,
+     4.5, -4.5, 0.5, 0.545, 0.271, 0.075,
+    -4.5, -4.5, 0.5, 0.545, 0.271, 0.075,
+    -4.0, -4.0, 0.5, 0.803, 0.522, 0.247,
+
+    // Sides of the chessboard
+    -4.5, -4.5, 0.5, 0.545, 0.271, 0.075,
+    -5.0, -5.0, 0.0, 0.35, 0.15, 0.06,
+    -5.0,  5.0, 0.0, 0.35, 0.15, 0.06,
+    -4.5,  4.5, 0.5, 0.545, 0.271, 0.075,
+
+    -4.5,  4.5, 0.5, 0.545, 0.271, 0.075,
+    -5.0,  5.0, 0.0, 0.35, 0.15, 0.06,
+     5.0,  5.0, 0.0, 0.35, 0.15, 0.06,
+     4.5,  4.5, 0.5, 0.545, 0.271, 0.075,
+
+     4.5,  4.5, 0.5, 0.545, 0.271, 0.075,
+     5.0,  5.0, 0.0, 0.35, 0.15, 0.06,
+     5.0, -5.0, 0.0, 0.35, 0.15, 0.06,
+     4.5, -4.5, 0.5, 0.545, 0.271, 0.075,
+
+     4.5, -4.5, 0.5, 0.545, 0.271, 0.075,
+     5.0, -5.0, 0.0, 0.35, 0.15, 0.06,
+    -5.0, -5.0, 0.0, 0.35, 0.15, 0.06,
+    -4.5, -4.5, 0.5, 0.545, 0.271, 0.075,
 };
 
-unsigned int indices[16] = {
+unsigned int indices[36] = {
     0, 1, 2, 3,
     4, 5, 6, 7,
     8, 9, 10, 11,
     12, 13, 14, 15,
+    16, 17, 18, 19,
+    20, 21, 22, 23,
+    24, 25, 26, 27,
+    28, 29, 30, 31,
+    32, 33, 34, 35,
 };
 
-glm::vec3 translation_vector = {0.0f, 0.0f, 5.0f};
-glm::vec3 scale_vector = {0.2f, 0.2f, 0.2f};
-glm::vec3 rotation_vector = {0.0f, 0.8f, 1.6f};
+glm::vec3 translation_vector = {0.0f, 0.0f, 0.0f};
+glm::vec3 scale_vector = {1.0f, 1.0f, 1.0f};
+glm::vec3 rotation_vector = {0.0f, 0.0f, 0.0f};
 
 float zoomOut = 1.0f;
 float aspect_ratio;
@@ -75,12 +108,18 @@ public:
 Camera camera(
     glm::vec3(0.0f, 0.0f, 10.0f),  // Position
     glm::vec3(0.0f, 0.0f, 0.0f),   // Target
-    glm::vec3(0.0f, 1.0f, 0.0f),   // Up direction
+    glm::vec3(0.0f, 0.1f, 1.0f),   // Up direction
     45.0f,                         // FOV
     aspect_ratio,                  // Aspect ratio
-    1.0f,                          // Near clip
-    20.0f                          // Far clip
+    0.1f,                          // Near clip
+    100.0f                         // Far clip
 );
+
+glm::vec3 camera_pos = glm::vec3(0.0f, 0.5f, 20.0f);
+glm::vec3 camera_rot = glm::vec3(-1.0f, 0.0f, 0.0f);
+glm::vec3 OX(1.0f, 0.0f, 0.0f);
+glm::vec3 OY(0.0f, 1.0f, 0.0f);
+glm::vec3 OZ(0.0f, 0.0f, 1.0f);
 
 void print_matrix(glm::mat4 mat)
 {
@@ -104,10 +143,33 @@ void initialization()
     glEnable(GL_DEPTH_TEST);
 }
 
+float speed = 0.5f;
+
 void keyFunction(GLFWwindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+
+    else if (key == GLFW_KEY_A && action == GLFW_PRESS)
+        camera_pos.x -= speed;
+
+    else if (key == GLFW_KEY_D && action == GLFW_PRESS)
+        camera_pos.x += speed;
+
+    else if (key == GLFW_KEY_W && action == GLFW_PRESS)
+        camera_pos.y += speed;
+
+    else if (key == GLFW_KEY_S && action == GLFW_PRESS)
+        camera_pos.y -= speed;
 }
+
+// Light and camera positions
+glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 10.0f);
+glm::vec3 viewPos = camera_pos;
+
+// Object and light colors
+glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+glm::vec3 objectColor = glm::vec3(0.8f, 0.5f, 0.3f);
+
 
 void renderChessBoard()
 {
@@ -220,17 +282,31 @@ void renderChessBoard()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glm::mat4 model = glm::toMat4(glm::quat(rotation_vector)) * glm::scale(glm::mat4(1.0f), scale_vector);
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), translation_vector) * glm::toMat4(glm::quat(rotation_vector)) * glm::scale(glm::mat4(1.0f), scale_vector);
     glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
 
     glm::mat4 projection = camera.getProjectionMatrix();
     glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    
+    glm::mat4 view_matrix = glm::mat4(
+        OX.x, OY.x, OZ.x, 0.0f,
+        OX.y, OY.y, OZ.y, 0.0f,
+        OX.z, OY.z, OZ.z, 0.0f,
+        -camera_pos.x, -camera_pos.y, -camera_pos.z, 1.0f
+    );
 
-    glm::mat4 view = camera.getViewMatrix();
-    glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glm::mat4 camera_transform = view_matrix * glm::toMat4(glm::quat(camera_rot));
+
+    glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_FALSE, glm::value_ptr(camera_transform));
+
+    // glUniform3fv(glGetUniformLocation(program, "lightPos"), 1, glm::value_ptr(lightPos));
+    // glUniform3fv(glGetUniformLocation(program, "viewPos"), 1, glm::value_ptr(viewPos));
+    // glUniform3fv(glGetUniformLocation(program, "lightColor"), 1, glm::value_ptr(lightColor));
+    // glUniform3fv(glGetUniformLocation(program, "objectColor"), 1, glm::value_ptr(objectColor));
     
     glBindVertexArray(VAO);
-    glDrawElements(GL_QUADS, 16, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_QUADS, 36, GL_UNSIGNED_INT, nullptr);
     glUseProgram(0);
 }
 
@@ -265,7 +341,10 @@ void renderImGui()
     ImGui::NewFrame();
 
     ImGui::Begin("Debug Console");
-    ImGui::DragFloat3("Object Rotation", glm::value_ptr(rotation_vector), 0.1f, 0.0f, 5.0f);
+    ImGui::DragFloat3("Object Translation", glm::value_ptr(translation_vector), 0.1f, -20.0f, 20.f);
+    ImGui::DragFloat3("Object Rotation", glm::value_ptr(rotation_vector), 0.1f, -45.0f, 45.0f);
+    ImGui::DragFloat3("Camera Position", glm::value_ptr(camera_pos), 0.2f, -50.0f, 50.f);
+    ImGui::DragFloat3("Camera Rotation", glm::value_ptr(camera_rot), 0.1f, -45.0f, 45.0f);
     ImGui::DragFloat("Zoom out", &zoomOut, 0.1f, 1.0f, 10.0f);
     ImGui::End();
 
