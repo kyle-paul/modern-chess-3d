@@ -1,11 +1,10 @@
-#include "model.h"
+#include "Core/Render/Model.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
-
 
 namespace Utils
 {
@@ -37,22 +36,6 @@ Model::Model(const std::string &filepath)
 Model::~Model()
 {
     vertices.clear();
-}
-
-void Model::Render()
-{
-    // int index;
-    // glPushMatrix();
-    //     glBegin(GL_TRIANGLES);
-    //         for(int i=0; i < vertSize; i++)
-    //         {
-    //             index = 8 * i;
-    //             glVertex3f(vertices[index], vertices[index+1], vertices[index+2]);
-    //             glTexCoord2f(vertices[index + 3], vertices[index + 4]);
-    //             glNormal3f(vertices[index + 5], vertices[index + 6], vertices[index + 7]);
-    //         }
-    //     glEnd();
-    // glPopMatrix();
 }
 
 void Model::RegisterMesh(const std::string &filepath)
@@ -114,7 +97,6 @@ void Model::RegisterMesh(const std::string &filepath)
             }
         }
     }
-    vertSize = vertices.size() / 8;
 }
 
 

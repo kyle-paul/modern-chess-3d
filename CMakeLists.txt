@@ -19,8 +19,9 @@ endif()
 
 # Add executable files
 add_executable(${PROJECT_NAME}
-    src/main.cpp
-    src/model.cpp
+    src/EntryPoint.cpp
+    src/Core/Render/Model.cpp
+    src/Core/Debug/Logging.cpp
 
     vendor/glad/src/glad.c
     vendor/imgui/imgui.cpp
@@ -38,6 +39,7 @@ include_directories(${PROJECT_NAME}
     vendor/glad/include
     vendor/imgui
     vendor/imgui/backends
+    vendor/spdlog/include
     libs/glfw-build/install/include
 	libs/glm-build/install/include
 )
