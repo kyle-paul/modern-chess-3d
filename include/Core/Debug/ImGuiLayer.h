@@ -1,7 +1,6 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Core/Window/WindowConfig.h"
 
 class ImGuiLayer
 {
@@ -13,8 +12,11 @@ public:
     static void Init(GLFWwindow *window);
     void Begin();
     void End();
-    void OnRender(Environment &env);
+    void OnRender();
 
 private:
-    
+    bool rotate = false;
+    float m_time = 0.0f;
+    float t = 0.0f;
+    float speed = 0.01f;
 };

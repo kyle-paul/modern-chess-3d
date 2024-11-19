@@ -1,7 +1,14 @@
 #pragma once
 #include <memory>
+#include <Core/Render/Shader.h>
 #include "Core/Render/VertexArray.h"
 #include "Core/Render/Buffer.h"
+#include "Core/Game/Square.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
 
 class Board
 {
@@ -11,8 +18,10 @@ public:
     ~Board();
 
     void Init();
+    const glm::mat4 GetTransform() const;
 
     void RenderChessBoard();
+    void RenderBoardSquares(const std::shared_ptr<Shader> &square_shader);
     void RenderChessPieces();
     void RenderMoveToSquare();
     void RenderValidMove();
@@ -74,9 +83,14 @@ private:
     std::shared_ptr<VertexBuffer> boardVB;
     std::shared_ptr<IndexBuffer> boardIB;
 
+    Square m_Squares;
+
 public:
     const int MIN_COL_INDEX = 1;
     const int MIN_ROW_INDEX = 1;
     const int MAX_COL_INDEX = 8;
     const int MAX_ROW_INDEX = 8;
+
+    glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
 };

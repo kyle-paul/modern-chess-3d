@@ -7,8 +7,11 @@
 - [x] Abstract the shading program
 - [x] Abstract the renderering system (support muliple backend APIs)
 - [x] Abstract the VertexArray, VertexBuffer, IndexBuffer 
+- [x] Abstract the environment (lighting, background)
+- [x] Abstract the square on board + rotation
+- [ ] Create the game state
 - [ ] Abstract the mesh loading
-- [ ] Abstract the environment (lighting, background)
+- [ ] Add all the chess players on the board + control lighting
 - [ ] Abstract the game layers (Game => board => square => piece)
 - [ ] Abstract the game rules
 - [ ] Add the feature of selecting entity by clicking

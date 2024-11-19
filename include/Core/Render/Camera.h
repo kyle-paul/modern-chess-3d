@@ -8,9 +8,11 @@ public:
     Camera();
     ~Camera();
 
-    glm::mat4 GetProjectionMatrix();
-    glm::mat4 GetViewMatrix();
-    glm::mat4 GetProjectionViewMatrix();
+    const glm::mat4 GetProjectionMatrix() const;
+    const glm::mat4 GetViewMatrix() const;
+    const glm::mat4 GetProjectionViewMatrix() const;
+    const glm::vec3 InterpolateWhite(float t) const;
+    const glm::vec3 InterpolateBlack(float t) const;
 
     CameraSpec m_Camspec;
       

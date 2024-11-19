@@ -2,6 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/compatibility.hpp>
 
 Camera::Camera()
 {
@@ -13,13 +14,13 @@ Camera::~Camera()
 
 }
 
-glm::mat4 Camera::GetProjectionMatrix()
+const glm::mat4 Camera::GetProjectionMatrix() const
 {
     return glm::perspective(glm::radians(m_Camspec.FOV), m_Camspec.Aspect, 
                             m_Camspec.NearClip, m_Camspec.FarClip);
 }
 
-glm::mat4 Camera::GetViewMatrix()
+const glm::mat4 Camera::GetViewMatrix() const
 {
     return glm::mat4(
         m_Camspec.OX.x, m_Camspec.OY.x, m_Camspec.OZ.x, 0.0f,
@@ -29,7 +30,17 @@ glm::mat4 Camera::GetViewMatrix()
     ) * glm::toMat4(glm::quat(m_Camspec.rotation));
 }
 
-glm::mat4 Camera::GetProjectionViewMatrix()
+const glm::mat4 Camera::GetProjectionViewMatrix() const
 {
     return GetProjectionMatrix() * GetViewMatrix();
+}
+
+const glm::vec3 Camera::InterpolateWhite(float t) const
+{
+    return glm::lerp(m_Camspec.current, m_Camspec.desired, t);
+}
+
+const glm::vec3 Camera::InterpolateBlack(float t) const
+{
+    return glm::lerp(m_Camspec.desired, m_Camspec.current, t);
 }

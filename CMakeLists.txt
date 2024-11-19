@@ -35,6 +35,7 @@ add_executable(${PROJECT_NAME}
 
     src/Core/Game/Game.cpp
     src/Core/Game/Board.cpp
+    src/Core/Game/Square.cpp
 
     src/Backends/OpenGL/OpenGLRenderer.cpp
     src/Backends/OpenGL/OpenGLShader.cpp

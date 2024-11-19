@@ -15,4 +15,6 @@ public:
 private:
     ShaderLibrary shadlib;
     Board m_Board;
+
+    friend class ImGuiLayer;
 }; 

@@ -73,7 +73,7 @@ void Window::Run()
 
         // Imgui Render
         m_Gui.Begin();
-        m_Gui.OnRender(m_Env);
+        m_Gui.OnRender();
         m_Gui.End();
         
         // Swap buffer

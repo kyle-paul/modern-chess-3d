@@ -25,12 +25,23 @@ void Board::Init()
         { ShaderDataType::Float3, "a_Color",  false },
     });
     boardVA->AddVertexBuffer(boardVB);
-    INFO("Chess Board loaded successfully");   
+    m_Squares.Init();
+    INFO("Chess Board loaded successfully");
+}
+
+const glm::mat4 Board::GetTransform() const
+{
+    return glm::translate(glm::mat4(1.0f), position) * glm::toMat4(glm::quat(rotation));
 }
 
 void Board::RenderChessBoard()
 {
     Renderer::Draw(boardVA, true, 36);
+}
+
+void Board::RenderBoardSquares(const std::shared_ptr<Shader> &square_shader)
+{
+    m_Squares.Render(square_shader);
 }
 
 void Board::RenderChessPieces()

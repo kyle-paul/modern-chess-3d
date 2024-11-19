@@ -45,7 +45,5 @@ void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer> &ver
                               layout.GetStride(),                             // The number of element on a row * 4 bytes 
                               (const void*)(uintptr_t)element.Offset);        // Offset
         index++;
-
-        WARN("{0} - {1} - {2}", element.GetDimCount(), layout.GetStride(), element.Offset);
     }
 }
