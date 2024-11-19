@@ -11,6 +11,11 @@ Square::Square(const Square& square)
 	this->m_OccupyingPiece = square.m_OccupyingPiece;
 }
 
+Square::~Square()
+{
+    delete m_OccupyingPiece;
+}
+
 Piece* Square::RemovePiece()
 {
     Piece* RemovedPiece = m_OccupyingPiece;

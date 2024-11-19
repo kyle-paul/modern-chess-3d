@@ -6,6 +6,7 @@ class Square
 public:
     Square();
     Square(const Square& square);
+    ~Square();
     bool SetOccupied(Piece* piece);
     bool GetOccupiedState();
 

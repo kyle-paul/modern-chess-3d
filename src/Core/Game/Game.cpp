@@ -16,7 +16,7 @@ Game::~Game()
 void Game::Init()
 {
     shadlib.Load("board_shader", "assets/shaders/BoardShader.glsl");
-    shadlib.Load("grid_shader", "assets/shaders/SquareShader.glsl");
+    shadlib.Load("grid_shader", "assets/shaders/GridShader.glsl");
     shadlib.Load("piece_shader", "assets/shaders/PieceShader.glsl");
     m_Board.Init();
 }
@@ -66,6 +66,7 @@ void Game::Run(Environment &env)
     shadlib.Get("grid_shader")->Bind();
     shadlib.Get("grid_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
     m_Board.RenderGrid(shadlib.Get("grid_shader"), state);
+    m_Board.RenderValidMove(shadlib.Get("grid_shader"), state, status);
     shadlib.Get("grid_shader")->UnBind();
 
     shadlib.Get("piece_shader")->Bind();

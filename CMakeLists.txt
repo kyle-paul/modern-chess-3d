@@ -32,6 +32,7 @@ add_executable(${PROJECT_NAME}
     src/Core/Render/VertexArray.cpp
     src/Core/Render/Buffer.cpp
     src/Core/Render/Model.cpp
+    src/Core/Render/Quad.cpp
 
     src/Core/Game/Game.cpp
     src/Core/Game/Board.cpp
@@ -40,6 +41,8 @@ add_executable(${PROJECT_NAME}
     src/Core/Game/Piece.cpp
     src/Core/Game/Rule.cpp
     src/Core/Game/Move.cpp
+    src/Core/Game/Rule.cpp
+    src/Core/Game/Status.cpp
 
     src/Backends/OpenGL/OpenGLRenderer.cpp
     src/Backends/OpenGL/OpenGLShader.cpp

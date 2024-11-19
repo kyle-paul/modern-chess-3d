@@ -1,11 +1,4 @@
 #include "Core/Game/Grid.h"
-#include "Core/Render/Renderer.h"
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/quaternion.hpp>
-
 
 Grid::Grid()
 {
@@ -19,13 +12,7 @@ Grid::~Grid()
 
 void Grid::Init()
 {
-    SquareVA = VertexArray::Create();
-    SquareVB = VertexBuffer::Create(vertices, sizeof(vertices));
-    SquareVB->SetLayout({
-        { ShaderDataType::Float3, "a_Position", false },
-    });
-    SquareVA->AddVertexBuffer(SquareVB);
-
+    m_Quad.Init();
     pieces.Pawn.Init();
     pieces.Bishop.Init();
     pieces.Rook.Init();
@@ -46,21 +33,15 @@ void Grid::Render(const std::shared_ptr<Shader> &gridShader, const GameState &st
 
             if (row == state.SelectedRow && col == state.SelectedCol)
             {
-                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(c, r, 0.0f)));
-                gridShader->SetInt("type", 2);
-                Renderer::Draw(SquareVA, true, 4);
+                m_Quad.Render(gridShader, glm::vec3(c, r, 0.0f), 2);
             }
             else if ((row + col) & 1) 
             {
-                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(c, r, 0.0f)));
-                gridShader->SetInt("type", 1);
-                Renderer::Draw(SquareVA, true, 4);
+                m_Quad.Render(gridShader, glm::vec3(c, r, 0.0f), 1);
             }
             else
             {
-                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(c, r, 0.0f)));
-                gridShader->SetInt("type", 0);
-                Renderer::Draw(SquareVA, true, 4);
+                m_Quad.Render(gridShader, glm::vec3(c, r, 0.0f), 0);
             }
         }        
     }

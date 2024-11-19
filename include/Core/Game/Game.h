@@ -5,6 +5,7 @@
 #include "Core/Render/Shader.h"
 #include "Core/Window/WindowConfig.h"
 #include "Core/Game/Board.h"
+#include "Core/Game/Status.h"
 
 class Game
 {
@@ -23,6 +24,7 @@ private:
 
 private:
     static GameState state;
+    Status status;
     ShaderLibrary shadlib;
     Board m_Board;
 

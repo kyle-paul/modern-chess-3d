@@ -14,7 +14,7 @@
 - [x] Add all the chess players on the board + control lighting
 - [x] Abstract the game layers (Game => board => square => piece)
 - [x] Add the selection by keyboard events
-- [ ] Abstract the game rules
+- [x] Abstract the game rules
 - [ ] Add the feature of selecting entity by clicking
 - [ ] Add the mode playing with machine
 - [ ] Game State Serialization

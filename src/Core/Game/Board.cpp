@@ -148,9 +148,31 @@ void Board::RenderMoveToSquare()
 
 }
 
-void Board::RenderValidMove()
+void Board::RenderValidMove(const std::shared_ptr<Shader> &gridShader, const GameState &state, Status &status)
 {
+    if (!state.Selected)
+        return;
 
+    int r,c;       
+    std::vector<Move> moves = m_Rule.GetValidMoves(m_Grid, state, status);
+
+    for (auto &move : moves)
+    {
+        auto DestPos = move.GetDestinationPos();
+        int type;
+
+        switch(move.GetType())
+        {
+            case MoveType::NORMAL: type = 3; break;
+            case MoveType::CAPTURE: type = 4; break;
+            case MoveType::EN_PASSANT: type = 5; break;
+            case MoveType::CASTLING: type = 6; break;
+        }
+
+        r = 1.0 * (DestPos.first - 5);
+        c = 1.0 * (DestPos.second - 5);
+        m_Grid.m_Quad.Render(gridShader, glm::vec3(c, r, 0.01f), type);
+    }
 }
 
 bool Board::MovePlayer()

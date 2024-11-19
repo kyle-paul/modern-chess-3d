@@ -1,8 +1,7 @@
 #pragma once
 #include <Core/Render/Shader.h>
-#include "Core/Render/VertexArray.h"
-#include "Core/Render/Buffer.h"
 #include "Core/Render/Model.h"
+#include "Core/Render/Quad.h"
 #include "Core/Game/Square.h"
 #include "Core/Game/Config/GameConfig.h"
 
@@ -28,18 +27,9 @@ public:
     Square* GetSquare(int row, int col);
 
 private:
-    float vertices [4 * 3] = {
-        0.0f, 0.0f, 0.5f,
-        0.0f, 1.0f, 0.5f,
-        1.0f, 1.0f, 0.5f,
-        1.0f, 0.0f, 0.5f,
-    };
-    
-    std::shared_ptr<VertexArray> SquareVA;
-    std::shared_ptr<VertexBuffer> SquareVB;
-
     Square m_Squares[10][10];
     PieceManger pieces;
+    Quad m_Quad;
 
     friend class Board;
 };

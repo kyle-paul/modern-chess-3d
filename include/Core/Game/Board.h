@@ -7,6 +7,9 @@
 #include "Core/Game/Config/GameConfig.h"
 #include "Core/Game/Grid.h"
 #include "Core/Game/Piece.h"
+#include "Core/Game/Move.h"
+#include "Core/Game/Rule.h"
+#include "Core/Game/Status.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -27,8 +30,8 @@ public:
     void RenderChessBoard();
     void RenderGrid(const std::shared_ptr<Shader> &gridShader, const GameState &state);
     void RenderPieces(const std::shared_ptr<Shader> &pieceShader, const GameState &state, const Environment &env);
+    void RenderValidMove(const std::shared_ptr<Shader> &gridShader, const GameState &state, Status &status);
     void RenderMoveToSquare();
-    void RenderValidMove();
     bool MovePlayer();
 
 private:
@@ -88,6 +91,7 @@ private:
     std::shared_ptr<IndexBuffer> boardIB;
 
     Grid m_Grid;
+    Rule m_Rule;
 
 public:
     const int MIN_COL_INDEX = 1;
