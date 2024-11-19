@@ -25,10 +25,13 @@ void Renderer::Shutdown()
     
 }
 
-void Renderer::Draw(const std::shared_ptr<VertexArray> &VA)
+#include <iostream>
+
+void Renderer::Draw(const std::shared_ptr<VertexArray> &VA, const bool &isQuad, const uint32_t &count)
 {
     VA->Bind();
-    glDrawArrays(GL_QUADS, 0, 36);
+    if (isQuad) glDrawArrays(GL_QUADS, 0, count);
+    else glDrawArrays(GL_TRIANGLES, 0, count);
 }
 
 void Renderer::DrawIndexed(const std::shared_ptr<VertexArray> &VA)
