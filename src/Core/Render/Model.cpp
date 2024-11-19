@@ -1,4 +1,5 @@
 #include "Core/Render/Model.h"
+#include "Core/Render/Renderer.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -33,9 +34,26 @@ Model::Model(const std::string &filepath)
     RegisterMesh(filepath);
 }
 
+void Model::Init()
+{
+    VA = VertexArray::Create();
+    VB = VertexBuffer::Create(vertices.data(), vertices.size() * sizeof(float));
+    VB->SetLayout({
+        { ShaderDataType::Float3, "a_position", false },
+        { ShaderDataType::Float2, "a_texture",  false },
+        { ShaderDataType::Float3, "a_normals",  false },
+    });
+    VA->AddVertexBuffer(VB);
+}
+
 Model::~Model()
 {
     vertices.clear();
+}
+
+void Model::Render()
+{
+    Renderer::Draw(VA, false, vertices.size() / 8);
 }
 
 void Model::RegisterMesh(const std::string &filepath)

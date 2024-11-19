@@ -25,17 +25,19 @@ add_executable(${PROJECT_NAME}
     src/Core/Debug/Logging.cpp
     src/Core/Debug/ImGuiLayer.cpp
 
-    src/Core/Render/Model.cpp
     src/Core/Render/Renderer.cpp
     src/Core/Render/RendererAPI.cpp
     src/Core/Render/Camera.cpp
     src/Core/Render/Shader.cpp
     src/Core/Render/VertexArray.cpp
     src/Core/Render/Buffer.cpp
+    src/Core/Render/Model.cpp
 
     src/Core/Game/Game.cpp
     src/Core/Game/Board.cpp
+    src/Core/Game/Grid.cpp
     src/Core/Game/Square.cpp
+    src/Core/Game/Piece.cpp
 
     src/Backends/OpenGL/OpenGLRenderer.cpp
     src/Backends/OpenGL/OpenGLShader.cpp

@@ -71,6 +71,9 @@ void ImGuiLayer::OnRender()
     ImGui::Combo("Color turn", &window->m_Game.state.Turn, turns, IM_ARRAYSIZE(turns));
     ImGui::Checkbox("Board rotating", &window->m_Game.state.BoardRotating);
 
+    ImGui::Text("Environment controller");
+    ImGui::DragFloat3("Light direction", glm::value_ptr(env.light_direction), 0.2f, -50.0f, 50.0f);
+
     ImGui::Text("Chess board");
     ImGui::DragFloat3("Board position", glm::value_ptr(window->m_Game.m_Board.position), 0.1f, -20.0f, 20.f);
     ImGui::DragFloat3("Board rotation", glm::value_ptr(window->m_Game.m_Board.rotation), 0.1f, -45.0f, 45.0f);

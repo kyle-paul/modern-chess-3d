@@ -3,24 +3,7 @@
 
 Game::Game()
 {
-    state.Selected = false;
-    state.SelectedRow = 1; 
-    state.SelectedCol = 1;
-    
-    state.SrcRow = 0;
-    state.SrcCol = 0;
-    state.DesRow = 0; 
-    state.DesCol = 0;
-    
-    state.CloseGame = false;
-    state.BoardRotating = true;
-    state.Check = false;
-    state.CheckMate = false;
-    state.NeedPromote = false;
-    state.Verify = false;
-    
-    state.Turn = 1;
-    state.TurnColor = PieceColor::WHITE;
+
 }
 
 Game::~Game()
@@ -31,7 +14,8 @@ Game::~Game()
 void Game::Init()
 {
     shadlib.Load("board_shader", "assets/shaders/BoardShader.glsl");
-    shadlib.Load("square_shader", "assets/shaders/SquareShader.glsl");
+    shadlib.Load("grid_shader", "assets/shaders/SquareShader.glsl");
+    shadlib.Load("piece_shader", "assets/shaders/PieceShader.glsl");
     m_Board.Init();
 }
 
@@ -77,10 +61,15 @@ void Game::Run(Environment &env)
     m_Board.RenderChessBoard();
     shadlib.Get("board_shader")->UnBind();
 
-    shadlib.Get("square_shader")->Bind();
-    shadlib.Get("square_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
-    m_Board.RenderBoardSquares(shadlib.Get("square_shader"), state);
-    shadlib.Get("square_shader")->UnBind();
+    shadlib.Get("grid_shader")->Bind();
+    shadlib.Get("grid_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
+    m_Board.RenderGrid(shadlib.Get("grid_shader"), state);
+    shadlib.Get("grid_shader")->UnBind();
+
+    shadlib.Get("piece_shader")->Bind();
+    shadlib.Get("piece_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
+    m_Board.RenderPieces(shadlib.Get("piece_shader"), state, env);
+    shadlib.Get("piece_shader")->UnBind();
 
     UpdateTurn();
 }

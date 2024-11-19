@@ -3,12 +3,15 @@
 
 struct GameState
 {
-    bool Selected; int SelectedRow, SelectedCol;
-    int SrcRow, SrcCol, DesRow, DesCol;
+    bool Selected = false; 
+    int SelectedRow = 1, SelectedCol = 1;
+    int SrcRow = 0, SrcCol = 0, DesRow = 0, DesCol = 0;
     
-    bool CloseGame, BoardRotating;
-    bool Check, CheckMate, NeedPromote, Verify;
+    bool CloseGame = false, BoardRotating = true;
+    bool Check = false, CheckMate = false, NeedPromote = false, Verify = false;
     
-    int Turn;
-    PieceColor TurnColor;
+    int Turn = 1;
+    PieceColor TurnColor = PieceColor::WHITE;
+
+    GameState() = default;
 };

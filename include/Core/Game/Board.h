@@ -3,8 +3,10 @@
 #include <Core/Render/Shader.h>
 #include "Core/Render/VertexArray.h"
 #include "Core/Render/Buffer.h"
-#include "Core/Game/Square.h"
+#include "Core/Window/WindowConfig.h"
 #include "Core/Game/Config/GameConfig.h"
+#include "Core/Game/Grid.h"
+#include "Core/Game/Piece.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,9 +23,10 @@ public:
     void Init();
     const glm::mat4 GetTransform() const;
 
+    void SetInitialPieces(const PieceColor &color);
     void RenderChessBoard();
-    void RenderBoardSquares(const std::shared_ptr<Shader> &square_shader, const GameState &state);
-    void RenderChessPieces();
+    void RenderGrid(const std::shared_ptr<Shader> &gridShader, const GameState &state);
+    void RenderPieces(const std::shared_ptr<Shader> &pieceShader, const GameState &state, const Environment &env);
     void RenderMoveToSquare();
     void RenderValidMove();
     bool MovePlayer();
@@ -84,7 +87,7 @@ private:
     std::shared_ptr<VertexBuffer> boardVB;
     std::shared_ptr<IndexBuffer> boardIB;
 
-    Square m_Squares;
+    Grid m_Grid;
 
 public:
     const int MIN_COL_INDEX = 1;

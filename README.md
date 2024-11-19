@@ -10,9 +10,9 @@
 - [x] Abstract the environment (lighting, background)
 - [x] Abstract the square on board + rotation
 - [x] Create the game state
-- [ ] Abstract the mesh loading
-- [ ] Add all the chess players on the board + control lighting
-- [ ] Abstract the game layers (Game => board => square => piece)
+- [x] Abstract the mesh loading
+- [x] Add all the chess players on the board + control lighting
+- [x] Abstract the game layers (Game => board => square => piece)
 - [ ] Abstract the game rules
 - [ ] Add the feature of selecting entity by clicking
 - [ ] Add the mode playing with machine

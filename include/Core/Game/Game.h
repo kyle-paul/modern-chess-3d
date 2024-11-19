@@ -12,12 +12,13 @@ public:
 
     void Init();
     void Run(Environment &env);
+
+private:
     void BoardRotationTurn(Environment &env, GameState &state);
     void UpdateTurn();
 
 private:
     GameState state;
-
     ShaderLibrary shadlib;
     Board m_Board;
 
