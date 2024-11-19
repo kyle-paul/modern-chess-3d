@@ -1,3 +1,4 @@
+#include "Core/Debug/Logging.h"
 #include <csignal>
 
 #define DEBUG

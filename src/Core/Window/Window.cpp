@@ -1,7 +1,10 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "Core/Window/Window.h"
 #include "Core/Debug/Logging.h"
 #include "Core/Debug/Assert.h"
 #include "Core/Render/Renderer.h"
+#include "Core/Debug/ImGuiLayer.h"
 
 Window *Window::m_WinInstance = nullptr;
 
@@ -45,6 +48,8 @@ void Window::Init()
     glfwMakeContextCurrent(m_Window);
     glfwSetKeyCallback(m_Window, KeyFunction);
     Renderer::Init();
+    Game::Init();
+    ImGuiLayer::Init(m_Window);
 }
 
 void Window::Run()
@@ -59,8 +64,16 @@ void Window::Run()
 
         // Clear color
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(m_WindSpec.BgColor.x, m_WindSpec.BgColor.y, 
-                     m_WindSpec.BgColor.z, m_WindSpec.BgColor.w);
+        glClearColor(m_WindSpec.BgColor[0], m_WindSpec.BgColor[1], 
+                     m_WindSpec.BgColor[2], m_WindSpec.BgColor[3]);
+
+        // Run the Game
+        m_Game.Run();
+
+        // Imgui Render
+        m_Gui.Begin();
+        m_Gui.OnRender();
+        m_Gui.End();
         
         // Swap buffer
         glfwSwapBuffers(m_Window);
