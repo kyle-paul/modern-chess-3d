@@ -23,6 +23,7 @@ private:
     WindowSpec m_WindSpec;
     ImGuiLayer m_Gui;
     Game m_Game;
-
+    Environment m_Env;
+    
     friend class ImGuiLayer;
 };

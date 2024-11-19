@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Render/Camera.h"
 #include <string>
 #include <glm/glm.hpp>
 
@@ -16,4 +17,10 @@ struct WindowSpec
     { 
         
     }
+};
+
+struct Environment
+{
+    Camera camera;
+    // Lighting / Background etc
 };

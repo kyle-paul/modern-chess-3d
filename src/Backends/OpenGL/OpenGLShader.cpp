@@ -1,3 +1,4 @@
+#include <glad/glad.h>
 #include "Backends/OpenGL/OpenGLShader.h"
 #include "Core/Debug/Logging.h"
 #include "Core/Debug/Assert.h"
@@ -24,7 +25,7 @@ OpenGLShader::OpenGLShader(const std::string &name, const std::string& vertexSrc
 
 OpenGLShader::~OpenGLShader()
 {
-    glDeleteProgram(m_ShaderID);   
+    glDeleteProgram(m_ShaderID);
 }
 
 std::string OpenGLShader::ReadFile(const std::string &filepath)
@@ -67,14 +68,15 @@ std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::stri
     return shaderSources;
 }
 
-void OpenGLShader::Compile(const std::unordered_map<unsigned int, std::string> &shaderSources)
+void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string> &shaderSources)
 {
-    GLuint program = glCreateProgram();
+    GLuint program = glCreateProgram();    
     ASSERT(shaderSources.size() <= 2, "Only support 2 shaders for now");
 
     std::array<GLenum, 2> glShaderIDs; 
     int glShaderIDIndex = 0;
 
+    
     for (auto &kv : shaderSources)
     {
         GLenum type = kv.first;
@@ -147,7 +149,6 @@ void OpenGLShader::UnBind() const
 {
     glUseProgram(0);
 }
-
 
 void OpenGLShader::SetInt(const std::string &name, int value)
 {

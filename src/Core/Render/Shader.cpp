@@ -45,20 +45,18 @@ void ShaderLibrary::Add(const std::string& name, const std::shared_ptr<Shader>& 
     m_ShaderLib[name] = shader;
 }
 
-std::shared_ptr<Shader> ShaderLibrary::Load(const std::string& name, const std::string& filepath)
+void ShaderLibrary::Load(const std::string& name, const std::string& filepath)
 {
     ASSERT(!Exists(name), "Shader already exists!");
     auto shader = Shader::Create(name, filepath); 
     Add(name, shader);
-    return shader;
 }
 
-std::shared_ptr<Shader> ShaderLibrary::Load(const std::string& name, const std::string &vertexSrc, const std::string &fragmentSrc)
+void ShaderLibrary::Load(const std::string& name, const std::string &vertexSrc, const std::string &fragmentSrc)
 {
     ASSERT(!Exists(name), "Shader already exists!");
     auto shader = Shader::Create(name, vertexSrc, fragmentSrc); 
     Add(name, shader);
-    return shader;
 }
 
 std::shared_ptr<Shader> ShaderLibrary::Get(const std::string& name)

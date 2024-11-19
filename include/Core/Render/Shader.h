@@ -30,8 +30,8 @@ public:
     void Add(const std::string& name, const std::shared_ptr<Shader>& shader);
     bool Exists(const std::string& name) const;
     
-    std::shared_ptr<Shader> Load(const std::string& name, const std::string& filepath);
-    std::shared_ptr<Shader> Load(const std::string& name, const std::string &vertexSrc, const std::string &fragmentSrc);
+    void Load(const std::string& name, const std::string& filepath);
+    void Load(const std::string& name, const std::string &vertexSrc, const std::string &fragmentSrc);
     std::shared_ptr<Shader> Get(const std::string& name);
 
 private:

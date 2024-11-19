@@ -24,3 +24,15 @@ void Renderer::Shutdown()
 {
     
 }
+
+void Renderer::Draw(const std::shared_ptr<VertexArray> &VA)
+{
+    VA->Bind();
+    glDrawArrays(GL_QUADS, 0, 36);
+}
+
+void Renderer::DrawIndexed(const std::shared_ptr<VertexArray> &VA)
+{
+    VA->Bind();
+    glDrawElements(GL_TRIANGLES, VA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);    
+}

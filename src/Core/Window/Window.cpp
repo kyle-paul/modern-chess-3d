@@ -48,7 +48,7 @@ void Window::Init()
     glfwMakeContextCurrent(m_Window);
     glfwSetKeyCallback(m_Window, KeyFunction);
     Renderer::Init();
-    Game::Init();
+    m_Game.Init();
     ImGuiLayer::Init(m_Window);
 }
 
@@ -61,6 +61,7 @@ void Window::Run()
         glfwGetFramebufferSize(m_Window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         m_WindSpec.Aspect = (float)display_w / (float)display_h;
+        m_Env.camera.m_Camspec.Aspect = m_WindSpec.Aspect;
 
         // Clear color
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -68,11 +69,11 @@ void Window::Run()
                      m_WindSpec.BgColor[2], m_WindSpec.BgColor[3]);
 
         // Run the Game
-        m_Game.Run();
+        m_Game.Run(m_Env);
 
         // Imgui Render
         m_Gui.Begin();
-        m_Gui.OnRender();
+        m_Gui.OnRender(m_Env);
         m_Gui.End();
         
         // Swap buffer

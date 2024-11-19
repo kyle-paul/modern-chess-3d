@@ -20,17 +20,25 @@ endif()
 # Add executable files
 add_executable(${PROJECT_NAME}
     src/EntryPoint.cpp
+    src/Core/Window/Window.cpp
+    
     src/Core/Debug/Logging.cpp
     src/Core/Debug/ImGuiLayer.cpp
-    src/Core/Window/Window.cpp
+
     src/Core/Render/Model.cpp
     src/Core/Render/Renderer.cpp
     src/Core/Render/RendererAPI.cpp
     src/Core/Render/Camera.cpp
     src/Core/Render/Shader.cpp
+    src/Core/Render/VertexArray.cpp
+    src/Core/Render/Buffer.cpp
+
     src/Core/Game/Game.cpp
+
     src/Backends/OpenGL/OpenGLRenderer.cpp
     src/Backends/OpenGL/OpenGLShader.cpp
+    src/Backends/OpenGL/OpenGLVertexArray.cpp
+    src/Backends/OpenGL/OpenGLBuffer.cpp
 
     vendor/glad/src/glad.c
     vendor/imgui/imgui.cpp

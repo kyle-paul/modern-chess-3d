@@ -49,12 +49,20 @@ void ImGuiLayer::End()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void ImGuiLayer::OnRender()
+void ImGuiLayer::OnRender(Environment &env)
 {
     Window* window = Window::GetInstance();
     auto &windowSpec = window->m_WindSpec;
 
     ImGui::Begin("Debug Console");
     ImGui::ColorEdit4("Background color", windowSpec.BgColor);
+
+    ImGui::Text("Camera editor");
+    ImGui::DragFloat("Field of view", &env.camera.m_Camspec.FOV, 1.0f, 10.0f, 90.0f);
+    ImGui::DragFloat("Near clip", &env.camera.m_Camspec.NearClip, 1.0f, -30.0f, 0.1f);
+    ImGui::DragFloat("Far clip", &env.camera.m_Camspec.FarClip, 1.0f, 20.0f, 100.0f);
+    ImGui::DragFloat3("Camera position", glm::value_ptr(env.camera.m_Camspec.position), 0.2f, -50.0f, 50.f);
+    ImGui::DragFloat3("Camera rotation", glm::value_ptr(env.camera.m_Camspec.rotation), 0.1f, -45.0f, 45.0f);
+
     ImGui::End();
 }

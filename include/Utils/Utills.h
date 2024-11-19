@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include "Core/Debug/Assert.h"
+#include <iostream>
 
 namespace Utils
 {
