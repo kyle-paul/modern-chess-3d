@@ -46,19 +46,19 @@ void Grid::Render(const std::shared_ptr<Shader> &gridShader, const GameState &st
 
             if (row == state.SelectedRow && col == state.SelectedCol)
             {
-                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(r, c, 0.0f)));
+                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(c, r, 0.0f)));
                 gridShader->SetInt("type", 2);
                 Renderer::Draw(SquareVA, true, 4);
             }
             else if ((row + col) & 1) 
             {
-                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(r, c, 0.0f)));
+                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(c, r, 0.0f)));
                 gridShader->SetInt("type", 1);
                 Renderer::Draw(SquareVA, true, 4);
             }
             else
             {
-                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(r, c, 0.0f)));
+                gridShader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(c, r, 0.0f)));
                 gridShader->SetInt("type", 0);
                 Renderer::Draw(SquareVA, true, 4);
             }

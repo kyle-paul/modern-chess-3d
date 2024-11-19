@@ -1,6 +1,8 @@
 #include "Core/Game/Game.h"
 #include "Core/Debug/Logging.h"
 
+GameState Game::state;
+
 Game::Game()
 {
 
@@ -78,4 +80,103 @@ void Game::Run(Environment &env)
 void Game::UpdateTurn()
 {
     state.TurnColor = (state.Turn & 1) ? PieceColor::WHITE : PieceColor::BLACK;
+}
+
+void Game::KeyFunction(int key, int action)
+{
+    if (key == GLFW_KEY_A && action == GLFW_PRESS)
+    {
+        int direction = 0;
+        switch(state.TurnColor)
+        {
+            case PieceColor::WHITE: direction = 1; break;
+            case PieceColor::BLACK: direction = -1; break;
+        }
+
+        if (state.SelectedCol > 1 && !state.Selected)
+        {
+            state.SelectedCol -= direction;
+        }
+        else if(state.DesCol >= 1 && state.Selected)
+        {
+            state.DesCol -= direction;
+        }
+    }
+
+    else if (key == GLFW_KEY_W && action == GLFW_PRESS)
+    {
+        int direction = 0;
+        switch(state.TurnColor)
+        {
+            case PieceColor::WHITE: direction = 1; break;
+            case PieceColor::BLACK: direction = -1; break;
+        }
+
+        if (state.SelectedRow < 8 && !state.Selected)
+        {
+            state.SelectedRow += direction;
+        }
+        else if (state.DesRow <= 8 && state.Selected)
+        {
+            state.DesRow += direction;
+        }
+    }
+
+    else if(key == GLFW_KEY_S && action == GLFW_PRESS)
+    {
+        int direction = 0;
+        switch(state.TurnColor)
+        {
+            case PieceColor::WHITE: direction = 1; break;
+            case PieceColor::BLACK: direction = -1; break;
+        }
+
+        if (state.SelectedRow > 1 && !state.Selected)
+        {
+            state.SelectedRow -= direction;
+        }
+        else if(state.DesRow >= 1 && state.Selected)
+        {
+            state.DesRow -= direction;
+        }
+    }
+
+    else if(key == GLFW_KEY_D && action == GLFW_PRESS)
+    {
+        int direction = 0;
+        switch(state.TurnColor)
+        {
+            case PieceColor::WHITE: direction = 1; break;
+            case PieceColor::BLACK: direction = -1; break;
+        }
+
+        if (state.SelectedCol < 8 && !state.Selected)
+        {
+            state.SelectedCol += direction;   
+        }
+        else if (state.DesCol <= 8 && state.Selected)
+        {
+            state.DesCol += direction;
+        }
+    }
+
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+    {
+        if (!state.Selected)
+        {
+            state.Selected = true;
+            state.SrcRow = state.SelectedRow;
+            state.SrcCol = state.SelectedCol;
+            state.DesRow = state.SelectedRow;
+            state.DesCol = state.SelectedCol;
+        }
+
+        else 
+        {
+            if ((state.DesRow == state.SrcRow) && (state.DesCol == state.SrcCol))
+            {
+                state.Selected = false;
+            }
+        }
+    }
 }

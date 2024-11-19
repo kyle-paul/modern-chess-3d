@@ -105,7 +105,7 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
                 {
                     z = 1.0f;
                 }
-                else z = 0.6f;
+                else z = 0.55f;
 
                 r = (row - 5) * 1.0f + 0.5f;
                 c = (col - 5) * 1.0f + 0.5f;

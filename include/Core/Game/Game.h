@@ -1,4 +1,6 @@
 #pragma once
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "Core/Game/Config/GameConfig.h"
 #include "Core/Render/Shader.h"
 #include "Core/Window/WindowConfig.h"
@@ -12,13 +14,15 @@ public:
 
     void Init();
     void Run(Environment &env);
+    
+    static void KeyFunction(int key, int action);
 
 private:
     void BoardRotationTurn(Environment &env, GameState &state);
     void UpdateTurn();
 
 private:
-    GameState state;
+    static GameState state;
     ShaderLibrary shadlib;
     Board m_Board;
 

@@ -38,6 +38,8 @@ add_executable(${PROJECT_NAME}
     src/Core/Game/Grid.cpp
     src/Core/Game/Square.cpp
     src/Core/Game/Piece.cpp
+    src/Core/Game/Rule.cpp
+    src/Core/Game/Move.cpp
 
     src/Backends/OpenGL/OpenGLRenderer.cpp
     src/Backends/OpenGL/OpenGLShader.cpp

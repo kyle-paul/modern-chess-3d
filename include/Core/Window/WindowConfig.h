@@ -22,5 +22,5 @@ struct WindowSpec
 struct Environment
 {
     Camera camera;
-    glm::vec3 light_direction = glm::vec3(34.0f, -30.0f, -40.0f);
+    glm::vec3 light_direction = glm::vec3(34.0f, 45.0f, -40.0f);
 };

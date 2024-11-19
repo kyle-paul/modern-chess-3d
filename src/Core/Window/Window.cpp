@@ -26,6 +26,8 @@ void Window::KeyFunction(GLFWwindow* window, int key, int scancode, int action, 
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
+
+    Game::KeyFunction(key, action);
 }
 
 void Window::Init()
