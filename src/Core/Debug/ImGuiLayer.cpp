@@ -55,24 +55,7 @@ void ImGuiLayer::OnRender()
     auto &windowSpec = window->m_WindSpec;
     auto &env = window->m_Env;    
 
-    static const char* turns[]{"White", "Black"};
-    static int currentTurn = 0;
-
-    if (t <= 1.0f && currentTurn == 1) 
-    {
-        env.camera.m_Camspec.rotation = env.camera.InterpolateWhite(t);
-        t += speed;
-    }
-    else if (t > 1.0f && t <= 2.0f && currentTurn==0)
-    {
-        env.camera.m_Camspec.rotation = env.camera.InterpolateBlack(t-1.0f);
-        t += speed;
-
-        if (t == 2.0f)
-        {
-            t == 0.0f;
-        }
-    }
+    static const char* turns[]{"Black", "White"};
 
     ImGui::Begin("Debug Console");
     ImGui::ColorEdit4("Background color", windowSpec.BgColor);
@@ -83,7 +66,10 @@ void ImGuiLayer::OnRender()
     ImGui::DragFloat("Far clip", &env.camera.m_Camspec.FarClip, 1.0f, 20.0f, 100.0f);
     ImGui::DragFloat3("Camera position", glm::value_ptr(env.camera.m_Camspec.position), 0.2f, -50.0f, 50.f);
     ImGui::DragFloat3("Camera rotation", glm::value_ptr(env.camera.m_Camspec.rotation), 0.1f, -45.0f, 45.0f);
-    ImGui::Combo("Color Turn", &currentTurn, turns, IM_ARRAYSIZE(turns));
+
+    ImGui::Text("Game controller");
+    ImGui::Combo("Color turn", &window->m_Game.state.Turn, turns, IM_ARRAYSIZE(turns));
+    ImGui::Checkbox("Board rotating", &window->m_Game.state.BoardRotating);
 
     ImGui::Text("Chess board");
     ImGui::DragFloat3("Board position", glm::value_ptr(window->m_Game.m_Board.position), 0.1f, -20.0f, 20.f);

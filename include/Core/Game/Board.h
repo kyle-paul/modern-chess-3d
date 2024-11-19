@@ -4,6 +4,7 @@
 #include "Core/Render/VertexArray.h"
 #include "Core/Render/Buffer.h"
 #include "Core/Game/Square.h"
+#include "Core/Game/Config/GameConfig.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,7 +22,7 @@ public:
     const glm::mat4 GetTransform() const;
 
     void RenderChessBoard();
-    void RenderBoardSquares(const std::shared_ptr<Shader> &square_shader);
+    void RenderBoardSquares(const std::shared_ptr<Shader> &square_shader, const GameState &state);
     void RenderChessPieces();
     void RenderMoveToSquare();
     void RenderValidMove();

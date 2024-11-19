@@ -39,9 +39,9 @@ void Board::RenderChessBoard()
     Renderer::Draw(boardVA, true, 36);
 }
 
-void Board::RenderBoardSquares(const std::shared_ptr<Shader> &square_shader)
+void Board::RenderBoardSquares(const std::shared_ptr<Shader> &square_shader, const GameState &state)
 {
-    m_Squares.Render(square_shader);
+    m_Squares.Render(square_shader, state);
 }
 
 void Board::RenderChessPieces()

@@ -27,10 +27,7 @@ void Square::Init()
     SquareVA->AddVertexBuffer(SquareVB);
 }
 
-int selectedRow = 0;
-int selectedCol = 0;
-
-void Square::Render(const std::shared_ptr<Shader> &square_shader)
+void Square::Render(const std::shared_ptr<Shader> &square_shader, const GameState &state)
 {
     float r, c;
     for (int row=1; row <= 8; row++)
@@ -40,20 +37,16 @@ void Square::Render(const std::shared_ptr<Shader> &square_shader)
             r = 1.0 * (row - 5);
             c = 1.0 * (col - 5);
 
-            if (row == selectedRow && col == selectedCol)
+            if (row == state.SelectedRow && col == state.SelectedCol)
             {
+                square_shader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(r, c, 0.0f)));
+                square_shader->SetInt("type", 2);
+                Renderer::Draw(SquareVA, true, 4);
             }
-
             else if ((row + col) & 1) 
             {
                 square_shader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(r, c, 0.0f)));
                 square_shader->SetInt("type", 1);
-                Renderer::Draw(SquareVA, true, 4);
-            }
-            else if (row == 1 & col == 1)
-            {
-                square_shader->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(r, c, 0.0f)));
-                square_shader->SetInt("type", 2);
                 Renderer::Draw(SquareVA, true, 4);
             }
             else

@@ -35,12 +35,12 @@ const glm::mat4 Camera::GetProjectionViewMatrix() const
     return GetProjectionMatrix() * GetViewMatrix();
 }
 
-const glm::vec3 Camera::InterpolateWhite(float t) const
+const glm::vec3 Camera::InterpolateWhite() const
 {
-    return glm::lerp(m_Camspec.current, m_Camspec.desired, t);
+    return glm::lerp(m_Camspec.current, m_Camspec.desired, m_Camspec.time);
 }
 
-const glm::vec3 Camera::InterpolateBlack(float t) const
+const glm::vec3 Camera::InterpolateBlack() const
 {
-    return glm::lerp(m_Camspec.desired, m_Camspec.current, t);
+    return glm::lerp(m_Camspec.desired, m_Camspec.current, m_Camspec.time - 1.0f);
 }

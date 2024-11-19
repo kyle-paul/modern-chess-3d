@@ -9,7 +9,7 @@
 - [x] Abstract the VertexArray, VertexBuffer, IndexBuffer 
 - [x] Abstract the environment (lighting, background)
 - [x] Abstract the square on board + rotation
-- [ ] Create the game state
+- [x] Create the game state
 - [ ] Abstract the mesh loading
 - [ ] Add all the chess players on the board + control lighting
 - [ ] Abstract the game layers (Game => board => square => piece)

@@ -2,6 +2,7 @@
 #include <Core/Render/Shader.h>
 #include "Core/Render/VertexArray.h"
 #include "Core/Render/Buffer.h"
+#include "Core/Game/Config/GameConfig.h"
 
 class Square
 {
@@ -10,7 +11,7 @@ public:
     ~Square();
     
     void Init();
-    void Render(const std::shared_ptr<Shader> &square_shader);
+    void Render(const std::shared_ptr<Shader> &square_shader, const GameState &state);
 
 private:
     float vertices [4 * 3] = {
