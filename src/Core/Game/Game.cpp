@@ -24,6 +24,7 @@ void Game::Init()
 
 void Game::BoardRotationTurn(Environment &env, GameState &state)
 {
+    state.TurnColor = (state.Turn & 1) ? PieceColor::WHITE : PieceColor::BLACK;
     switch(state.TurnColor)
     {
         case PieceColor::WHITE:
@@ -31,6 +32,7 @@ void Game::BoardRotationTurn(Environment &env, GameState &state)
             if (env.camera.m_Camspec.time <= 1.0f && state.Turn % 2 == 1) 
             {
                 env.camera.m_Camspec.rotation = env.camera.InterpolateWhite();
+                env.lighting.light_direction = env.lighting.InterpolateWhite(env.camera.m_Camspec.time);
                 env.camera.m_Camspec.time += 0.01f;
             }
             else state.BoardRotating = false;
@@ -41,6 +43,7 @@ void Game::BoardRotationTurn(Environment &env, GameState &state)
             if (env.camera.m_Camspec.time > 1.0f && env.camera.m_Camspec.time <= 2.0f && state.Turn % 2 == 0) 
             {
                 env.camera.m_Camspec.rotation = env.camera.InterpolateBlack();
+                env.lighting.light_direction = env.lighting.InterpolateBlack(env.camera.m_Camspec.time);
                 env.camera.m_Camspec.time += 0.01f;
             }
             else 
@@ -75,14 +78,30 @@ void Game::Run(Environment &env)
     shadlib.Get("piece_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
     m_Board.RenderPieces(shadlib.Get("piece_shader"), state, env);
     shadlib.Get("piece_shader")->UnBind();
-
-    UpdateTurn();
 }
 
 
 void Game::UpdateTurn()
 {
+    state.Selected = false;
+    state.NeedPromote = false;
+    state.Check = false;
+
+    state.BoardRotating = true;
+    state.Turn++;
     state.TurnColor = (state.Turn & 1) ? PieceColor::WHITE : PieceColor::BLACK;
+
+    switch(state.TurnColor)
+    {
+        case PieceColor::WHITE:
+            state.SelectedRow = 1;
+            state.SelectedCol = 8;
+            break;
+        case PieceColor::BLACK:
+            state.SelectedRow = 8;
+            state.SelectedCol = 1;
+            break;
+    }
 }
 
 
@@ -97,11 +116,11 @@ void Game::KeyFunction(int &key, int &action)
             case PieceColor::BLACK: direction = -1; break;
         }
 
-        if (state.SelectedCol > 1 && !state.Selected)
+        if (state.SelectedCol >= 1 && state.SelectedCol <= 8 && !state.Selected)
         {
             state.SelectedCol -= direction;
         }
-        else if(state.DesCol > 1 && state.Selected)
+        else if(state.DesCol > 1 && state.DesCol <= 8 && state.Selected)
         {
             state.DesCol -= direction;
         }
@@ -116,11 +135,11 @@ void Game::KeyFunction(int &key, int &action)
             case PieceColor::BLACK: direction = -1; break;
         }
 
-        if (state.SelectedRow < 8 && !state.Selected)
+        if (state.SelectedRow <= 8 && state.SelectedRow >= 1 && !state.Selected)
         {
             state.SelectedRow += direction;
         }
-        else if (state.DesRow < 8 && state.Selected)
+        else if (state.DesRow <= 8 && state.DesRow >= 1 && state.Selected)
         {
             state.DesRow += direction;
         }
@@ -135,11 +154,11 @@ void Game::KeyFunction(int &key, int &action)
             case PieceColor::BLACK: direction = -1; break;
         }
 
-        if (state.SelectedRow > 1 && !state.Selected)
+        if (state.SelectedRow >= 1 && state.SelectedRow <= 8 && !state.Selected)
         {
             state.SelectedRow -= direction;
         }
-        else if(state.DesRow > 1 && state.Selected)
+        else if(state.DesRow >= 1 && state.DesRow <= 8 && state.Selected)
         {
             state.DesRow -= direction;
         }
@@ -154,11 +173,11 @@ void Game::KeyFunction(int &key, int &action)
             case PieceColor::BLACK: direction = -1; break;
         }
 
-        if (state.SelectedCol < 8 && !state.Selected)
+        if (state.SelectedCol <= 8 && state.SelectedCol >= 1 && !state.Selected)
         {
             state.SelectedCol += direction;
         }
-        else if (state.DesCol < 8 && state.Selected)
+        else if (state.DesCol <= 8 && state.DesCol >= 1 && state.Selected)
         {
             state.DesCol += direction;
         }
@@ -183,11 +202,15 @@ void Game::KeyFunction(int &key, int &action)
             }
             else if (m_Board.MovePlayer(state, status))
             {
-                state.Selected = false;
-                state.SelectedRow = state.DesRow;
-                state.SelectedCol = state.DesCol;
-                state.SrcRow = state.DesRow;
-                state.SrcCol = state.DesCol;
+                Piece *piece = m_Board.m_Grid.GetSquare(state.DesRow, state.DesCol)->GetPiece();
+                if (piece->GetType() == PieceType::PAWN &&
+                    ((piece->GetColor() == PieceColor::BLACK && state.DesRow == m_Board.MIN_ROW_INDEX) ||
+                    (piece->GetColor() == PieceColor::WHITE && state.DesRow == m_Board.MAX_COL_INDEX))
+                    )
+                {
+                    state.NeedPromote = true;
+                }
+                UpdateTurn();
             }
         }
     }

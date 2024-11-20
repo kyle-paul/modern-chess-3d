@@ -94,6 +94,8 @@ private:
     Rule m_Rule;
     std::vector<Move> moves;
 
+    friend class Game;
+
 public:
     const int MIN_COL_INDEX = 1;
     const int MIN_ROW_INDEX = 1;

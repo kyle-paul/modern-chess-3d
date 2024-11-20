@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Render/Camera.h"
+#include "Core/Render/Lighting.h"
 #include <string>
 #include <glm/glm.hpp>
 
@@ -22,5 +23,5 @@ struct WindowSpec
 struct Environment
 {
     Camera camera;
-    glm::vec3 light_direction = glm::vec3(34.0f, 45.0f, -40.0f);
+    Lighting lighting;
 };

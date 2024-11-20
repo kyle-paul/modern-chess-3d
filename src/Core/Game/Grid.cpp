@@ -33,7 +33,17 @@ void Grid::Render(const std::shared_ptr<Shader> &gridShader, const GameState &st
 
             if (row == state.SelectedRow && col == state.SelectedCol)
             {
-                m_Quad.Render(gridShader, glm::vec3(c, r, 0.0f), 2);
+                if (GetSquare(row, col)->GetOccupiedState())
+                {
+                    if (GetSquare(row, col)->GetPiece()->GetColor() == state.TurnColor)
+                    {
+                        m_Quad.Render(gridShader, glm::vec3(c, r, 0.0f), 2);
+                    }
+                    else 
+                    {
+                        m_Quad.Render(gridShader, glm::vec3(c, r, 0.0f));
+                    }
+                }
             }
             else if ((row + col) & 1) 
             {

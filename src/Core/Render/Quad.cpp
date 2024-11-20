@@ -24,6 +24,6 @@ void Quad::Init()
 void Quad::Render(const std::shared_ptr<Shader> &shad, const glm::vec3 &pos, const int &type)
 {
     shad->SetMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(pos.x, pos.y, pos.z)));
-    shad->SetInt("type", type);
+    if (type!=-1) shad->SetInt("type", type);
     Renderer::Draw(QuadVA, true, 4);
 }

@@ -14,7 +14,7 @@ public:
     Quad();
     ~Quad();
     void Init();
-    void Render(const std::shared_ptr<Shader> &shad, const glm::vec3 &position, const  int &type);
+    void Render(const std::shared_ptr<Shader> &shad, const glm::vec3 &position, const  int &type=-1);
 
 private:
     float vertices [4 * 3] = {

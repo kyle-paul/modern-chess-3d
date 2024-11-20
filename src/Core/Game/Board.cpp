@@ -113,7 +113,7 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
                 glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(c, r, z)) *
                                   glm::scale(glm::mat4(1.0f), glm::vec3(0.014f, 0.014f, 0.014f));
                 pieceShader->SetMat4("model", model);
-                pieceShader->SetFloat3("light_direction", env.light_direction);
+                pieceShader->SetFloat3("light_direction", env.lighting.light_direction);
 
                 switch(m_Grid.GetSquare(row, col)->GetPiece()->GetColor())
                 {
