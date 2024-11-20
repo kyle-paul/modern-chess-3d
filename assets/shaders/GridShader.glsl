@@ -31,6 +31,8 @@ void main()
         color = vec4(0.5, 0.5, 0.5, 1.0);
     else if (type == 6)
         color = vec4(0.9, 0.1, 0.6, 1.0);
+    else if (type == 7)
+        color = vec4(0.0, 0.7, 0.2, 0.9);
     else 
         color = vec4(1.0, 0.0, 0.0, 1.0);
 }

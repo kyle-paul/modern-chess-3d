@@ -29,7 +29,7 @@ uniform vec3 v_color;
 
 void main()
 {
-    float lightStrength = max(0.5, dot(v_normals, normalize(light_direction)));
+    float lightStrength = max(0.5, dot(v_normals, normalize(light_direction))) ;
     vec3 color = v_color * lightStrength;
     render = vec4(color, 1.0);
 }

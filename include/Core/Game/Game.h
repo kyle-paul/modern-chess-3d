@@ -16,7 +16,7 @@ public:
     void Init();
     void Run(Environment &env);
     
-    static void KeyFunction(int key, int action);
+    void KeyFunction(int &key, int &action);
 
 private:
     void BoardRotationTurn(Environment &env, GameState &state);
@@ -24,9 +24,10 @@ private:
 
 private:
     static GameState state;
-    Status status;
-    ShaderLibrary shadlib;
+    static Status status;
     Board m_Board;
+    ShaderLibrary shadlib;
 
     friend class ImGuiLayer;
+    friend class Window;
 }; 

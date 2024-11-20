@@ -27,7 +27,11 @@ void Window::KeyFunction(GLFWwindow* window, int key, int scancode, int action, 
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 
-    Game::KeyFunction(key, action);
+    Game* gameInstance = static_cast<Game*>(glfwGetWindowUserPointer(window));
+    if (gameInstance) 
+    {
+        gameInstance->KeyFunction(key, action);
+    }
 }
 
 void Window::Init()
@@ -48,6 +52,7 @@ void Window::Init()
         exit(-1);
     }
     glfwMakeContextCurrent(m_Window);
+    glfwSetWindowUserPointer(m_Window, &m_Game);
     glfwSetKeyCallback(m_Window, KeyFunction);
     Renderer::Init();
     m_Game.Init();

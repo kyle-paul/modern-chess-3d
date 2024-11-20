@@ -2,6 +2,7 @@
 #include "Core/Debug/Logging.h"
 
 GameState Game::state;
+Status Game::status;
 
 Game::Game()
 {
@@ -67,6 +68,7 @@ void Game::Run(Environment &env)
     shadlib.Get("grid_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
     m_Board.RenderGrid(shadlib.Get("grid_shader"), state);
     m_Board.RenderValidMove(shadlib.Get("grid_shader"), state, status);
+    m_Board.RenderMoveToSquare(shadlib.Get("grid_shader"), state);
     shadlib.Get("grid_shader")->UnBind();
 
     shadlib.Get("piece_shader")->Bind();
@@ -83,7 +85,8 @@ void Game::UpdateTurn()
     state.TurnColor = (state.Turn & 1) ? PieceColor::WHITE : PieceColor::BLACK;
 }
 
-void Game::KeyFunction(int key, int action)
+
+void Game::KeyFunction(int &key, int &action)
 {
     if (key == GLFW_KEY_A && action == GLFW_PRESS)
     {
@@ -98,7 +101,7 @@ void Game::KeyFunction(int key, int action)
         {
             state.SelectedCol -= direction;
         }
-        else if(state.DesCol >= 1 && state.Selected)
+        else if(state.DesCol > 1 && state.Selected)
         {
             state.DesCol -= direction;
         }
@@ -117,7 +120,7 @@ void Game::KeyFunction(int key, int action)
         {
             state.SelectedRow += direction;
         }
-        else if (state.DesRow <= 8 && state.Selected)
+        else if (state.DesRow < 8 && state.Selected)
         {
             state.DesRow += direction;
         }
@@ -136,7 +139,7 @@ void Game::KeyFunction(int key, int action)
         {
             state.SelectedRow -= direction;
         }
-        else if(state.DesRow >= 1 && state.Selected)
+        else if(state.DesRow > 1 && state.Selected)
         {
             state.DesRow -= direction;
         }
@@ -153,9 +156,9 @@ void Game::KeyFunction(int key, int action)
 
         if (state.SelectedCol < 8 && !state.Selected)
         {
-            state.SelectedCol += direction;   
+            state.SelectedCol += direction;
         }
-        else if (state.DesCol <= 8 && state.Selected)
+        else if (state.DesCol < 8 && state.Selected)
         {
             state.DesCol += direction;
         }
@@ -177,6 +180,14 @@ void Game::KeyFunction(int key, int action)
             if ((state.DesRow == state.SrcRow) && (state.DesCol == state.SrcCol))
             {
                 state.Selected = false;
+            }
+            else if (m_Board.MovePlayer(state, status))
+            {
+                state.Selected = false;
+                state.SelectedRow = state.DesRow;
+                state.SelectedCol = state.DesCol;
+                state.SrcRow = state.DesRow;
+                state.SrcCol = state.DesCol;
             }
         }
     }

@@ -143,9 +143,15 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
     }
 }
 
-void Board::RenderMoveToSquare()
+void Board::RenderMoveToSquare(const std::shared_ptr<Shader> &gridShader, const GameState &state)
 {
+    float r = 1.0 * (state.DesRow - 5);
+    float c = 1.0 * (state.DesCol - 5);
 
+    if (state.Selected)
+    {
+        m_Grid.m_Quad.Render(gridShader, glm::vec3(c, r, 0.011f), 7);
+    }
 }
 
 void Board::RenderValidMove(const std::shared_ptr<Shader> &gridShader, const GameState &state, Status &status)
@@ -154,7 +160,7 @@ void Board::RenderValidMove(const std::shared_ptr<Shader> &gridShader, const Gam
         return;
 
     int r,c;       
-    std::vector<Move> moves = m_Rule.GetValidMoves(m_Grid, state, status);
+    moves = m_Rule.GetValidMoves(m_Grid, state, status);
 
     for (auto &move : moves)
     {
@@ -175,7 +181,68 @@ void Board::RenderValidMove(const std::shared_ptr<Shader> &gridShader, const Gam
     }
 }
 
-bool Board::MovePlayer()
-{
+bool Board::MovePlayer(const GameState &state, Status &status)
+{   
+    for (auto &move : moves)
+    {
+        auto DesPos = move.GetDestinationPos();
+
+        if (DesPos.first == state.DesRow && DesPos.second == state.DesCol)
+        {
+            Piece* piece = move.GetMovedPiece();
+            auto OrigPos = move.GetOriginPos();
+
+            switch(move.GetType())
+            {
+                case MoveType::NORMAL:
+                {
+                    if (piece->GetType() == PieceType::PAWN && (OrigPos.first - DesPos.first) == 2)
+                    {
+                        status.SetPieceEnPassantable(piece->GetColor(), piece);
+                    }
+                    else if (piece->GetType() == PieceType::KING)
+                    {
+                        status.SetKingMove(piece->GetColor());
+                    }
+                    else if (piece->GetType() == PieceType::ROOK)
+                    {
+                        if (OrigPos.second == MIN_COL_INDEX) status.SetFirstColRookMove(piece->GetColor());
+                        else if (OrigPos.second == MAX_COL_INDEX) status.SetLastColRookMove(piece->GetColor());
+                    }
+                    return m_Grid.GetSquare(DesPos.first, DesPos.second)->SetOccupied(m_Grid.GetSquare(OrigPos.first, OrigPos.second)->RemovePiece());
+                }
+                
+                case MoveType::CAPTURE:
+                {
+                    if (piece->GetType() == PieceType::KING)
+                    {
+                        status.SetKingMove(piece->GetColor());
+                    }
+                    else if (piece->GetType() == PieceType::ROOK)
+                    {
+                        if (OrigPos.second == MIN_COL_INDEX) status.SetFirstColRookMove(piece->GetColor());
+                        else if (OrigPos.second == MAX_COL_INDEX) status.SetLastColRookMove(piece->GetColor());
+                    }
+
+                    m_Grid.GetSquare(DesPos.first, DesPos.second)->RemovePiece();
+                    return m_Grid.GetSquare(DesPos.first, DesPos.second)->SetOccupied(m_Grid.GetSquare(OrigPos.first, OrigPos.second)->RemovePiece());
+                }
+                
+                case MoveType::CASTLING:
+                {
+                    int RookOriginCol = ((DesPos.second < OrigPos.second) ? MIN_COL_INDEX : MAX_COL_INDEX);
+                    int RookDestCol = ((DesPos.second < OrigPos.second) ? OrigPos.second - 1 : OrigPos.second + 1);
+
+                    m_Grid.GetSquare(DesPos.first, DesPos.second)->SetOccupied(m_Grid.GetSquare(OrigPos.first, OrigPos.second)->RemovePiece());
+                    m_Grid.GetSquare(DesPos.first, RookDestCol)->SetOccupied(m_Grid.GetSquare(OrigPos.first, RookOriginCol)->RemovePiece());
+                    RookOriginCol > RookDestCol ? status.SetLastColRookMove(piece->GetColor()) : status.SetFirstColRookMove(piece->GetColor());
+                    status.SetKingMove(piece->GetColor());
+                    return true;
+                }
+                default: break;
+            }
+            return false;
+        }
+    }
     return false;
 }

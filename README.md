@@ -15,7 +15,7 @@
 - [x] Abstract the game layers (Game => board => square => piece)
 - [x] Add the selection by keyboard events
 - [x] Abstract the game rules
-- [ ] Add the feature of selecting entity by clicking
+- [ ] Add the feature of selecting entity by clicking with frame buffer
 - [ ] Add the mode playing with machine
 - [ ] Game State Serialization
 - [ ] Add UI stuffs for users

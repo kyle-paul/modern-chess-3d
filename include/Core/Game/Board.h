@@ -31,8 +31,8 @@ public:
     void RenderGrid(const std::shared_ptr<Shader> &gridShader, const GameState &state);
     void RenderPieces(const std::shared_ptr<Shader> &pieceShader, const GameState &state, const Environment &env);
     void RenderValidMove(const std::shared_ptr<Shader> &gridShader, const GameState &state, Status &status);
-    void RenderMoveToSquare();
-    bool MovePlayer();
+    void RenderMoveToSquare(const std::shared_ptr<Shader> &gridShader, const GameState &state);
+    bool MovePlayer(const GameState &state, Status &status);
 
 private:
     float vertices[36 * 6] = {
@@ -92,6 +92,7 @@ private:
 
     Grid m_Grid;
     Rule m_Rule;
+    std::vector<Move> moves;
 
 public:
     const int MIN_COL_INDEX = 1;
