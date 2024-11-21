@@ -6,6 +6,7 @@
 #include "Core/Window/WindowConfig.h"
 #include "Core/Game/Board.h"
 #include "Core/Game/Status.h"
+#include "Core/Render/Framebuffer.h"
 
 class Game
 {

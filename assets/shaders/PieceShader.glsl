@@ -19,7 +19,8 @@ void main()
 
 #type fragment
 #version 330 core
-out vec4 render;
+layout(location=0) out vec4 render;
+layout(location=1) out int entity;
 
 in vec2 v_texture;
 in vec3 v_normals;
@@ -32,4 +33,5 @@ void main()
     float lightStrength = max(0.5, dot(v_normals, normalize(light_direction))) ;
     vec3 color = v_color * lightStrength;
     render = vec4(color, 1.0);
+    entity = 50;
 }

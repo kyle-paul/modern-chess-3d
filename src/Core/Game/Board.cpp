@@ -94,6 +94,7 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
 {
     float z = 0.0f;
     float r, c;
+    glm::vec3 rotation;
     
     for (int row=1; row <= 8; row++)
     {
@@ -110,15 +111,11 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
                 r = (row - 5) * 1.0f + 0.5f;
                 c = (col - 5) * 1.0f + 0.5f;
 
-                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(c, r, z)) *
-                                  glm::scale(glm::mat4(1.0f), glm::vec3(0.014f, 0.014f, 0.014f));
-                pieceShader->SetMat4("model", model);
-                pieceShader->SetFloat3("light_direction", env.lighting.light_direction);
-
                 switch(m_Grid.GetSquare(row, col)->GetPiece()->GetColor())
                 {
                     case PieceColor::WHITE:
                     {
+                        rotation = glm::vec3(0, 0, glm::radians(180.0f));
                         pieceShader->SetFloat3("v_color", glm::vec3(0.9f, 0.9f, 0.9f));
                         break;
                     }
@@ -128,6 +125,13 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
                         break;
                     }
                 }
+
+                glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(c, r, z)) *
+                                  glm::toMat4(glm::quat(rotation)) *
+                                  glm::scale(glm::mat4(1.0f), glm::vec3(0.014f, 0.014f, 0.014f));
+                pieceShader->SetMat4("model", model);
+                pieceShader->SetFloat3("light_direction", env.lighting.light_direction);
+                
 
                 switch(m_Grid.GetSquare(row, col)->GetPiece()->GetType())
                 {

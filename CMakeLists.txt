@@ -27,6 +27,7 @@ add_executable(${PROJECT_NAME}
 
     src/Core/Render/Renderer.cpp
     src/Core/Render/RendererAPI.cpp
+    src/Core/Render/Framebuffer.cpp
     src/Core/Render/Camera.cpp
     src/Core/Render/Shader.cpp
     src/Core/Render/VertexArray.cpp
@@ -45,6 +46,7 @@ add_executable(${PROJECT_NAME}
     src/Core/Game/Status.cpp
 
     src/Backends/OpenGL/OpenGLRenderer.cpp
+    src/Backends/OpenGL/OpenGLFramebuffer.cpp
     src/Backends/OpenGL/OpenGLShader.cpp
     src/Backends/OpenGL/OpenGLVertexArray.cpp
     src/Backends/OpenGL/OpenGLBuffer.cpp

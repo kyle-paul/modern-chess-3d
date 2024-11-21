@@ -20,7 +20,7 @@ Window::~Window()
     glfwTerminate();
 }
 
-void Window::KeyFunction(GLFWwindow* window, int key, int scancode, int action, int mods) 
+void Window::KeyFunction(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     {
@@ -31,6 +31,16 @@ void Window::KeyFunction(GLFWwindow* window, int key, int scancode, int action, 
     if (gameInstance) 
     {
         gameInstance->KeyFunction(key, action);
+    }
+}
+
+void Window::MouseFunction(GLFWwindow* window, int button, int action, int mods)
+{
+    if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
+    {
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        INFO("Mouse = {0} - {1}", xpos, ypos);
     }
 }
 
@@ -54,9 +64,16 @@ void Window::Init()
     glfwMakeContextCurrent(m_Window);
     glfwSetWindowUserPointer(m_Window, &m_Game);
     glfwSetKeyCallback(m_Window, KeyFunction);
+    glfwSetMouseButtonCallback(m_Window, MouseFunction);
+
     Renderer::Init();
     m_Game.Init();
     ImGuiLayer::Init(m_Window);
+
+    FramebufferConfig fbspec;
+	fbspec.Width = 900.0f; 
+	fbspec.Height = 700.0f;
+	fb = Framebuffer::Create(fbspec);
 }
 
 void Window::Run()
@@ -66,25 +83,32 @@ void Window::Run()
         // Framebuffer resize
         int display_w, display_h;
         glfwGetFramebufferSize(m_Window, &display_w, &display_h);
+
+        if (display_w != fb->GetWidth() || display_h != fb->GetHeight())
+            fb->Resize(display_w, display_h);
+
         glViewport(0, 0, display_w, display_h);
         m_WindSpec.Aspect = (float)display_w / (float)display_h;
         m_Env.camera.m_Camspec.Aspect = m_WindSpec.Aspect;
 
         // Clear color
+        fb->Bind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(m_WindSpec.BgColor[0], m_WindSpec.BgColor[1], 
                      m_WindSpec.BgColor[2], m_WindSpec.BgColor[3]);
 
-        // Run the Game
+        // // Run the Game
         m_Game.Run(m_Env);
+        fb->Unbind();
 
         // Imgui Render
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         m_Gui.Begin();
         m_Gui.OnRender();
         m_Gui.End();
-        
+
         // Swap buffer
-        glfwSwapBuffers(m_Window);
         glfwPollEvents();
+        glfwSwapBuffers(m_Window);
     }
 }

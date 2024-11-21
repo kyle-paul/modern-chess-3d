@@ -80,7 +80,6 @@ void Game::Run(Environment &env)
     shadlib.Get("piece_shader")->UnBind();
 }
 
-
 void Game::UpdateTurn()
 {
     state.Selected = false;

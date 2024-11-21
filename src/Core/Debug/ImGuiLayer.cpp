@@ -49,13 +49,16 @@ void ImGuiLayer::End()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+static const char* turns[]{"Black", "White"};
+static const char* modes[]{"Two players", "Classic machine", "Deep learning"};
+static int mode;
+
 void ImGuiLayer::OnRender()
 {
     Window *window = Window::GetInstance();
+    
     auto &windowSpec = window->m_WindSpec;
-    auto &env = window->m_Env;    
-
-    static const char* turns[]{"Black", "White"};
+    auto &env = window->m_Env;
 
     ImGui::Begin("Debug Console");
     ImGui::ColorEdit4("Background color", windowSpec.BgColor);
@@ -77,5 +80,13 @@ void ImGuiLayer::OnRender()
     ImGui::Text("Chess board");
     ImGui::DragFloat3("Board position", glm::value_ptr(window->m_Game.m_Board.position), 0.1f, -20.0f, 20.f);
     ImGui::DragFloat3("Board rotation", glm::value_ptr(window->m_Game.m_Board.rotation), 0.1f, -45.0f, 45.0f);
+
+    ImGui::Text("Game options");
+    ImGui::Combo("Playing mode", &mode , modes, IM_ARRAYSIZE(modes));
     ImGui::End();
+
+    ImGui::Begin("Viewport");
+	unsigned int textureID = window->fb->GetColorAttachmentID();
+	ImGui::Image((ImTextureID)(uintptr_t)textureID, ImVec2{ 900.0f, 700.0f });
+	ImGui::End();
 }
