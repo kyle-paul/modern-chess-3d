@@ -6,6 +6,8 @@
 #include "imgui_impl_opengl3.h"
 #include <glm/gtc/type_ptr.hpp>
 
+glm::vec2 ImGuiLayer::m_ViewportSize;
+
 ImGuiLayer::ImGuiLayer()
 {
 
@@ -53,9 +55,38 @@ static const char* turns[]{"Black", "White"};
 static const char* modes[]{"Two players", "Classic machine", "Deep learning"};
 static int mode;
 
-void ImGuiLayer::OnRender()
+void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
 {
     Window *window = Window::GetInstance();
+
+    fb->Bind();
+    auto [mx, my] = ImGui::GetMousePos();
+    if (ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+    {
+        if (mx > 0 && mx < m_ViewportSize.x && my > 0 && my < m_ViewportSize.y)
+        {
+            int row = fb->ReadPixel(1, (int)mx, (int)my);
+            int col = fb->ReadPixel(2, (int)mx, (int)my);
+
+            if (1 <= row  && row <= 8 && 1 <= col && col <= 8)
+            {
+                if (!window->m_Game.state.Selected)
+                {
+                    window->m_Game.state.SelectedRow = row;
+                    window->m_Game.state.SelectedCol = col;
+                }
+                else 
+                {
+                    window->m_Game.state.DesRow = row;
+                    window->m_Game.state.DesCol = col;
+                }
+                window->m_Game.ControllMove();
+            }
+        }
+    }    
+    fb->Unbind();
+
+    ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
     
     auto &windowSpec = window->m_WindSpec;
     auto &env = window->m_Env;
@@ -85,8 +116,21 @@ void ImGuiLayer::OnRender()
     ImGui::Combo("Playing mode", &mode , modes, IM_ARRAYSIZE(modes));
     ImGui::End();
 
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
     ImGui::Begin("Viewport");
+
+    ImVec2 viewportpanelsize = ImGui::GetContentRegionAvail();
+    
+    if (m_ViewportSize != *(glm::vec2*)&viewportpanelsize)
+    {
+        m_ViewportSize = { viewportpanelsize.x, viewportpanelsize.y };
+        window->fb->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+    }
+
 	unsigned int textureID = window->fb->GetColorAttachmentID();
-	ImGui::Image((ImTextureID)(uintptr_t)textureID, ImVec2{ 900.0f, 700.0f });
+	ImGui::Image((ImTextureID)(uintptr_t)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y });
+
 	ImGui::End();
+    ImGui::PopStyleVar();
 }

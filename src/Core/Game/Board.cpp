@@ -121,6 +121,7 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
                     }
                     case PieceColor::BLACK:
                     {
+                        rotation = glm::vec3(0, 0, glm::radians(360.0f));
                         pieceShader->SetFloat3("v_color", glm::vec3(0.2f, 0.2f, 0.2f));
                         break;
                     }
@@ -131,7 +132,8 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
                                   glm::scale(glm::mat4(1.0f), glm::vec3(0.014f, 0.014f, 0.014f));
                 pieceShader->SetMat4("model", model);
                 pieceShader->SetFloat3("light_direction", env.lighting.light_direction);
-                
+                pieceShader->SetInt("v_row", row);
+                pieceShader->SetInt("v_col", col);
 
                 switch(m_Grid.GetSquare(row, col)->GetPiece()->GetType())
                 {
@@ -170,6 +172,9 @@ void Board::RenderValidMove(const std::shared_ptr<Shader> &gridShader, const Gam
     {
         auto DestPos = move.GetDestinationPos();
         int type;
+
+        gridShader->SetInt("v_row", DestPos.first);
+        gridShader->SetInt("v_col", DestPos.second);
 
         switch(move.GetType())
         {

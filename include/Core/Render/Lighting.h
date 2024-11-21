@@ -13,7 +13,7 @@ public:
     const glm::vec3 InterpolateBlack(float &t) const { return glm::lerp(desired_light, current_light, t); } 
 
 public:
-    glm::vec3 current_light = glm::vec3(34.0f, 45.0f, -40.0f);
+    glm::vec3 current_light = glm::vec3(15.0f, -50.0f, -50.0f);
     glm::vec3 desired_light = glm::vec3(0.0f, -4.6f, -2.6f);
     glm::vec3 light_direction = current_light;
 

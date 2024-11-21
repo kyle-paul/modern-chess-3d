@@ -22,6 +22,7 @@ public:
 private:
     void BoardRotationTurn(Environment &env, GameState &state);
     void UpdateTurn();
+    void ControllMove();
 
 private:
     static GameState state;

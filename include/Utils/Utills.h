@@ -17,5 +17,5 @@ namespace Utils
         }
         ASSERT(false, "Unknown shader type!");
         return 0;
-    }
+    }  
 };

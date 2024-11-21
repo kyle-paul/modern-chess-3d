@@ -31,6 +31,9 @@ void Grid::Render(const std::shared_ptr<Shader> &gridShader, const GameState &st
             r = 1.0 * (row - 5);
             c = 1.0 * (col - 5);
 
+            gridShader->SetInt("v_row", row);
+            gridShader->SetInt("v_col", col);
+
             if (row == state.SelectedRow && col == state.SelectedCol)
             {
                 if (GetSquare(row, col)->GetOccupiedState())
@@ -52,7 +55,7 @@ void Grid::Render(const std::shared_ptr<Shader> &gridShader, const GameState &st
             else
             {
                 m_Quad.Render(gridShader, glm::vec3(c, r, 0.0f), 0);
-            }
+            }           
         }        
     }
 }

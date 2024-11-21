@@ -20,8 +20,8 @@ private:
 
 private:
     static Window* m_WinInstance;
+    static WindowSpec m_WindSpec;
     GLFWwindow* m_Window;
-    WindowSpec m_WindSpec;
     ImGuiLayer m_Gui;
     Game m_Game;
     Environment m_Env;

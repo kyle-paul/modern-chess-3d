@@ -115,13 +115,13 @@ void Game::KeyFunction(int &key, int &action)
             case PieceColor::BLACK: direction = -1; break;
         }
 
-        if (state.SelectedCol >= 1 && state.SelectedCol <= 8 && !state.Selected)
+        if (state.SelectedCol <= 8 && state.SelectedCol >= 1 && !state.Selected)
         {
-            state.SelectedCol -= direction;
+            state.SelectedCol += direction;
         }
-        else if(state.DesCol > 1 && state.DesCol <= 8 && state.Selected)
+        else if (state.DesCol <= 8 && state.DesCol >= 1 && state.Selected)
         {
-            state.DesCol -= direction;
+            state.DesCol += direction;
         }
     }
 
@@ -172,19 +172,27 @@ void Game::KeyFunction(int &key, int &action)
             case PieceColor::BLACK: direction = -1; break;
         }
 
-        if (state.SelectedCol <= 8 && state.SelectedCol >= 1 && !state.Selected)
+        if (state.SelectedCol >= 1 && state.SelectedCol <= 8 && !state.Selected)
         {
-            state.SelectedCol += direction;
+            state.SelectedCol -= direction;
         }
-        else if (state.DesCol <= 8 && state.DesCol >= 1 && state.Selected)
+        else if(state.DesCol > 1 && state.DesCol <= 8 && state.Selected)
         {
-            state.DesCol += direction;
+            state.DesCol -= direction;
         }
     }
 
     else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
     {
-        if (!state.Selected)
+        ControllMove();
+    }
+}
+
+void Game::ControllMove()
+{
+    if (!state.Selected)
+    {
+        if (m_Board.m_Grid.GetSquare(state.SelectedRow, state.SelectedCol)->GetOccupiedState())
         {
             state.Selected = true;
             state.SrcRow = state.SelectedRow;
@@ -192,25 +200,25 @@ void Game::KeyFunction(int &key, int &action)
             state.DesRow = state.SelectedRow;
             state.DesCol = state.SelectedCol;
         }
+    }
 
-        else 
+    else 
+    {
+        if ((state.DesRow == state.SrcRow) && (state.DesCol == state.SrcCol))
         {
-            if ((state.DesRow == state.SrcRow) && (state.DesCol == state.SrcCol))
+            state.Selected = false;
+        }
+        else if (m_Board.MovePlayer(state, status))
+        {
+            Piece *piece = m_Board.m_Grid.GetSquare(state.DesRow, state.DesCol)->GetPiece();
+            if (piece->GetType() == PieceType::PAWN &&
+                ((piece->GetColor() == PieceColor::BLACK && state.DesRow == m_Board.MIN_ROW_INDEX) ||
+                (piece->GetColor() == PieceColor::WHITE && state.DesRow == m_Board.MAX_COL_INDEX))
+                )
             {
-                state.Selected = false;
+                state.NeedPromote = true;
             }
-            else if (m_Board.MovePlayer(state, status))
-            {
-                Piece *piece = m_Board.m_Grid.GetSquare(state.DesRow, state.DesCol)->GetPiece();
-                if (piece->GetType() == PieceType::PAWN &&
-                    ((piece->GetColor() == PieceColor::BLACK && state.DesRow == m_Board.MIN_ROW_INDEX) ||
-                    (piece->GetColor() == PieceColor::WHITE && state.DesRow == m_Board.MAX_COL_INDEX))
-                    )
-                {
-                    state.NeedPromote = true;
-                }
-                UpdateTurn();
-            }
+            UpdateTurn();
         }
     }
 }

@@ -93,7 +93,8 @@ private:
     Grid m_Grid;
     Rule m_Rule;
     std::vector<Move> moves;
-
+    
+    int entityID = 0;
     friend class Game;
 
 public:

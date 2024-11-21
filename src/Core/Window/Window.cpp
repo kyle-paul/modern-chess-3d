@@ -5,8 +5,10 @@
 #include "Core/Debug/Assert.h"
 #include "Core/Render/Renderer.h"
 #include "Core/Debug/ImGuiLayer.h"
+#include "imgui.h"
 
 Window *Window::m_WinInstance = nullptr;
+WindowSpec Window::m_WindSpec;
 
 Window::Window()
 {
@@ -36,12 +38,16 @@ void Window::KeyFunction(GLFWwindow* window, int key, int scancode, int action, 
 
 void Window::MouseFunction(GLFWwindow* window, int button, int action, int mods)
 {
-    if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
-    {
-        double xpos, ypos;
-        glfwGetCursorPos(window, &xpos, &ypos);
-        INFO("Mouse = {0} - {1}", xpos, ypos);
-    }
+    // if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
+    // {
+    //     auto [mx, my] = ImGui::GetMousePos();
+    //     if (mx > 0 && mx < m_WindSpec.Width && my > 0 && my < m_WindSpec.Height)
+    //     {
+    //         int pixel = fbo_instance->ReadPixel(1, (int)mx, (int)my);
+    //         INFO("Mouse = {0} - {1}", mx, my);
+    //     }
+    // }
+    // fbo_instance->Unbind();
 }
 
 void Window::Init()
@@ -63,6 +69,7 @@ void Window::Init()
     }
     glfwMakeContextCurrent(m_Window);
     glfwSetWindowUserPointer(m_Window, &m_Game);
+    glfwSetWindowUserPointer(m_Window, &fb);
     glfwSetKeyCallback(m_Window, KeyFunction);
     glfwSetMouseButtonCallback(m_Window, MouseFunction);
 
@@ -71,8 +78,9 @@ void Window::Init()
     ImGuiLayer::Init(m_Window);
 
     FramebufferConfig fbspec;
-	fbspec.Width = 900.0f; 
-	fbspec.Height = 700.0f;
+    fbspec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
+    fbspec.Width = 1200.0f;
+	fbspec.Height = 810.0f;
 	fb = Framebuffer::Create(fbspec);
 }
 
@@ -80,19 +88,16 @@ void Window::Run()
 {
     while (!glfwWindowShouldClose(m_Window))
     {
-        // Framebuffer resize
+        // Framebuffer resizeFramebufferTextureFormat::RED_INTEGER
         int display_w, display_h;
         glfwGetFramebufferSize(m_Window, &display_w, &display_h);
-
-        if (display_w != fb->GetWidth() || display_h != fb->GetHeight())
-            fb->Resize(display_w, display_h);
-
         glViewport(0, 0, display_w, display_h);
         m_WindSpec.Aspect = (float)display_w / (float)display_h;
         m_Env.camera.m_Camspec.Aspect = m_WindSpec.Aspect;
 
         // Clear color
         fb->Bind();
+        fb->ClearAttachment(1, -1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(m_WindSpec.BgColor[0], m_WindSpec.BgColor[1], 
                      m_WindSpec.BgColor[2], m_WindSpec.BgColor[3]);
@@ -104,7 +109,7 @@ void Window::Run()
         // Imgui Render
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         m_Gui.Begin();
-        m_Gui.OnRender();
+        m_Gui.OnRender(fb);
         m_Gui.End();
 
         // Swap buffer
