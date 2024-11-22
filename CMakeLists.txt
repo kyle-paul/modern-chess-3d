@@ -45,6 +45,8 @@ add_executable(${PROJECT_NAME}
     src/Core/Game/Rule.cpp
     src/Core/Game/Status.cpp
 
+    src/Core/Machine/Minimax.cpp
+
     src/Backends/OpenGL/OpenGLRenderer.cpp
     src/Backends/OpenGL/OpenGLFramebuffer.cpp
     src/Backends/OpenGL/OpenGLShader.cpp

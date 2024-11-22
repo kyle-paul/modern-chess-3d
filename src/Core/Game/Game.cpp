@@ -19,7 +19,14 @@ void Game::Init()
     shadlib.Load("board_shader", "assets/shaders/BoardShader.glsl");
     shadlib.Load("grid_shader", "assets/shaders/GridShader.glsl");
     shadlib.Load("piece_shader", "assets/shaders/PieceShader.glsl");
-    m_Board.Init();
+    board.Init();
+
+    solver = Minimax(8, 2);
+    std::vector<int> scores = {8, 7, 3, 9, 9, 8, 2, 4, 1, 8, 8, 9, 9, 9, 3, 4};
+    solver.SetScore(scores);
+    int depth = solver.CalDepth(scores.size(), 2);
+    int result = solver.Solve(0, 0, true);
+    INFO("Depth = {0} | Result = {1}", depth, result);
 }
 
 void Game::BoardRotationTurn(Environment &env, GameState &state)
@@ -63,20 +70,20 @@ void Game::Run(Environment &env)
 
     shadlib.Get("board_shader")->Bind();
     shadlib.Get("board_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
-    shadlib.Get("board_shader")->SetMat4("model", m_Board.GetTransform());
-    m_Board.RenderChessBoard();
+    shadlib.Get("board_shader")->SetMat4("model", board.GetTransform());
+    board.RenderChessBoard();
     shadlib.Get("board_shader")->UnBind();
 
     shadlib.Get("grid_shader")->Bind();
     shadlib.Get("grid_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
-    m_Board.RenderGrid(shadlib.Get("grid_shader"), state);
-    m_Board.RenderValidMove(shadlib.Get("grid_shader"), state, status);
-    m_Board.RenderMoveToSquare(shadlib.Get("grid_shader"), state);
+    board.RenderGrid(shadlib.Get("grid_shader"), state);
+    board.RenderValidMove(shadlib.Get("grid_shader"), state, status);
+    board.RenderMoveToSquare(shadlib.Get("grid_shader"), state);
     shadlib.Get("grid_shader")->UnBind();
 
     shadlib.Get("piece_shader")->Bind();
     shadlib.Get("piece_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
-    m_Board.RenderPieces(shadlib.Get("piece_shader"), state, env);
+    board.RenderPieces(shadlib.Get("piece_shader"), state, env);
     shadlib.Get("piece_shader")->UnBind();
 }
 
@@ -192,7 +199,7 @@ void Game::ControllMove()
 {
     if (!state.Selected)
     {
-        if (m_Board.m_Grid.GetSquare(state.SelectedRow, state.SelectedCol)->GetOccupiedState())
+        if (board.m_Grid.GetSquare(state.SelectedRow, state.SelectedCol)->GetOccupiedState())
         {
             state.Selected = true;
             state.SrcRow = state.SelectedRow;
@@ -208,12 +215,12 @@ void Game::ControllMove()
         {
             state.Selected = false;
         }
-        else if (m_Board.MovePlayer(state, status))
+        else if (board.MovePlayer(state, status))
         {
-            Piece *piece = m_Board.m_Grid.GetSquare(state.DesRow, state.DesCol)->GetPiece();
+            Piece *piece = board.m_Grid.GetSquare(state.DesRow, state.DesCol)->GetPiece();
             if (piece->GetType() == PieceType::PAWN &&
-                ((piece->GetColor() == PieceColor::BLACK && state.DesRow == m_Board.MIN_ROW_INDEX) ||
-                (piece->GetColor() == PieceColor::WHITE && state.DesRow == m_Board.MAX_COL_INDEX))
+                ((piece->GetColor() == PieceColor::BLACK && state.DesRow == board.MIN_ROW_INDEX) ||
+                (piece->GetColor() == PieceColor::WHITE && state.DesRow == board.MAX_COL_INDEX))
                 )
             {
                 state.NeedPromote = true;

@@ -109,8 +109,8 @@ void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
     ImGui::DragFloat3("Light direction", glm::value_ptr(env.lighting.light_direction), 0.2f, -50.0f, 50.0f);
 
     ImGui::Text("Chess board");
-    ImGui::DragFloat3("Board position", glm::value_ptr(window->m_Game.m_Board.position), 0.1f, -20.0f, 20.f);
-    ImGui::DragFloat3("Board rotation", glm::value_ptr(window->m_Game.m_Board.rotation), 0.1f, -45.0f, 45.0f);
+    ImGui::DragFloat3("Board position", glm::value_ptr(window->m_Game.board.position), 0.1f, -20.0f, 20.f);
+    ImGui::DragFloat3("Board rotation", glm::value_ptr(window->m_Game.board.rotation), 0.1f, -45.0f, 45.0f);
 
     ImGui::Text("Game options");
     ImGui::Combo("Playing mode", &mode , modes, IM_ARRAYSIZE(modes));
