@@ -44,22 +44,22 @@ void Rule::GetValidMovePawn(int srcrow, int srccol, std::vector<Move> &moves, Pi
     // Normal capture
     if(srcrow >= MIN_ROW_INDEX && srcrow <= MAX_ROW_INDEX && srccol >= MIN_COL_INDEX && srccol <= MAX_COL_INDEX)
     {
-        if(p_Grid->GetSquare(srcrow, srccol)->GetOccupiedState())
+        if(p_Grid->GetSquare(srcrow + up1, srccol + left)->GetOccupiedState())
         {
-            if(p_Grid->GetSquare(srcrow, srccol)->GetPiece()->GetColor() != piece->GetColor())
+            if(p_Grid->GetSquare(srcrow + up1, srccol + left)->GetPiece()->GetColor() != piece->GetColor())
             {
-                moves.push_back(Move(MoveType::CAPTURE, srcrow, srccol, srcrow + up1, srccol + left, piece, p_Grid->GetSquare(srcrow, srccol)->GetPiece()));
+                moves.push_back(Move(MoveType::CAPTURE, srcrow, srccol, srcrow + up1, srccol + left, piece, p_Grid->GetSquare(srcrow + up1, srccol + left)->GetPiece()));
             }
         }
     }
 
     if(srcrow >= MIN_ROW_INDEX && srcrow <= MAX_ROW_INDEX && srccol >= MIN_COL_INDEX && srccol <= MAX_COL_INDEX)
     {
-        if(p_Grid->GetSquare(srcrow, srccol)->GetOccupiedState())
+        if(p_Grid->GetSquare(srcrow + up1, srccol + right)->GetOccupiedState())
         {
-            if(p_Grid->GetSquare(srcrow, srccol)->GetPiece()->GetColor() != piece->GetColor())
+            if(p_Grid->GetSquare(srcrow + up1, srccol + right)->GetPiece()->GetColor() != piece->GetColor())
             {
-                moves.push_back(Move(MoveType::CAPTURE, srcrow, srccol, srcrow + up1, srccol + right, piece, p_Grid->GetSquare(srcrow, srccol)->GetPiece()));
+                moves.push_back(Move(MoveType::CAPTURE, srcrow, srccol, srcrow + up1, srccol + right, piece, p_Grid->GetSquare(srcrow + up1, srccol + right)->GetPiece()));
             }
         }
     }

@@ -17,7 +17,8 @@
 - [x] Abstract the game rules
 - [x] Add the feature of selecting entity by clicking
 - [x] Add the Undo moves feature with Stack
-- [ ] Add the mode playing with machine
+- [x] Add the mode playing with machine (Minimax)
+- [ ] Alpha Beta Pruning for larger depth search
 - [ ] Game State Serialization
 - [ ] Add UI stuffs for users
 - [ ] Train Reinforcment Learning with Pytorch

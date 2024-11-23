@@ -85,12 +85,12 @@ void Game::UpdateTurn()
     state.Selected = false;
     state.NeedPromote = false;
     state.Check = false;
-
-    if (state.mode == Mode::Human) state.BoardRotating = true;
-    else MoveAI();
     
     state.Turn++;
     state.TurnColor = (state.Turn & 1) ? PieceColor::WHITE : PieceColor::BLACK;
+
+    if (state.mode == Mode::Human) state.BoardRotating = true;
+    else if (state.TurnColor == PieceColor::BLACK) MoveAI();
 
     switch(state.TurnColor)
     {
@@ -107,10 +107,20 @@ void Game::UpdateTurn()
 
 void Game::MoveAI()
 {
-    // INFO("MoveAI");
-    // state.thinking = true;
-    // Action chosenAction = solver.Solve(board, 0, true);
-    // state.thinking = false;
+    INFO("MoveAI");
+    state.thinking = true;
+    Move initial = Move(MoveType::NORMAL, 0,0,0,0, nullptr, nullptr);
+    Action chosen = solver.Solve(board, 0, initial, true);
+
+    INFO("Piece = {0} - {1} | start = {1} - {2} | end = {3} - {4}", 
+         PieceTypeLog(chosen.move.GetMovedPiece()->GetType()),  
+         PieceColorLog(chosen.move.GetMovedPiece()->GetColor()),
+         chosen.move.GetOriginPos().first, chosen.move.GetOriginPos().second, 
+         chosen.move.GetDestinationPos().first, chosen.move.GetDestinationPos().second);
+    
+    board.MakeMove(chosen.move);
+    state.thinking = false;
+    UpdateTurn();
 }
 
 void Game::KeyFunction(int &key, int &action)
@@ -203,6 +213,12 @@ void Game::KeyFunction(int &key, int &action)
             board.UndoMove();
             UpdateTurn();
         }
+        else board.UndoMove();
+    }
+
+    else if (key == GLFW_KEY_K && action == GLFW_PRESS)
+    {
+        INFO("Eval = {0}", board.GetEvaluation());
     }
 }
 
@@ -210,7 +226,8 @@ void Game::ControllMove()
 {
     if (!state.Selected)
     {
-        if (board.m_Grid.GetSquare(state.SelectedRow, state.SelectedCol)->GetOccupiedState())
+        if (board.m_Grid.GetSquare(state.SelectedRow, state.SelectedCol)->GetOccupiedState() && 
+            board.m_Grid.GetSquare(state.SelectedRow, state.SelectedCol)->GetPiece()->GetColor() == state.TurnColor)
         {
             state.Selected = true;
             state.SrcRow = state.SelectedRow;

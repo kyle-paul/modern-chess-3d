@@ -7,8 +7,10 @@
 
 struct Action
 {
-    int row, col;
+    Move move;
     int score;
+
+    Action() : move(Move(MoveType::NORMAL, 0,0,0,0, nullptr, nullptr)), score(0) {}
 };
 
 class Minimax
@@ -18,7 +20,7 @@ public:
     Minimax(Grid *grid, Status &status, int h);
     ~Minimax();
 
-    // Action Solve(Board &board, int depth, bool isMax);
+    Action Solve(Board &board, int depth, Move &move, bool isMax);
 
 private:
     int h;
