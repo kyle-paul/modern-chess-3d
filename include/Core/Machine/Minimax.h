@@ -1,18 +1,29 @@
 #pragma once
 #include <vector>
+#include "Core/Game/Board.h"
+#include "Core/Game/Rule.h"
+#include "Core/Game/Grid.h"
+#include "Core/Game/Status.h"
+
+struct Action
+{
+    int row, col;
+    int score;
+};
 
 class Minimax
 {
 public:
     Minimax() = default;
-    Minimax(int n, int b);
+    Minimax(Grid *grid, Status &status, int h);
     ~Minimax();
 
-    int Solve(int depth, int node, bool isMax);
-    int CalDepth(int n, int b);
-    void SetScore(const std::vector<int> &input_scores);
+    // Action Solve(Board &board, int depth, bool isMax);
 
 private:
-    std::vector<int> scores;
-    int b, h, n;
+    int h;
+    Rule m_Rule;
+    Grid *p_grid;
+    Status m_status;
+    std::vector<Move> moves;
 };

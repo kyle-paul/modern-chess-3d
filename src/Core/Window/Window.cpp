@@ -36,20 +36,6 @@ void Window::KeyFunction(GLFWwindow* window, int key, int scancode, int action, 
     }
 }
 
-void Window::MouseFunction(GLFWwindow* window, int button, int action, int mods)
-{
-    // if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
-    // {
-    //     auto [mx, my] = ImGui::GetMousePos();
-    //     if (mx > 0 && mx < m_WindSpec.Width && my > 0 && my < m_WindSpec.Height)
-    //     {
-    //         int pixel = fbo_instance->ReadPixel(1, (int)mx, (int)my);
-    //         INFO("Mouse = {0} - {1}", mx, my);
-    //     }
-    // }
-    // fbo_instance->Unbind();
-}
-
 void Window::Init()
 {
     if (!glfwInit())
@@ -69,9 +55,7 @@ void Window::Init()
     }
     glfwMakeContextCurrent(m_Window);
     glfwSetWindowUserPointer(m_Window, &m_Game);
-    glfwSetWindowUserPointer(m_Window, &fb);
     glfwSetKeyCallback(m_Window, KeyFunction);
-    glfwSetMouseButtonCallback(m_Window, MouseFunction);
 
     Renderer::Init();
     m_Game.Init();

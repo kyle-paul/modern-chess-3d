@@ -17,20 +17,20 @@ public:
 
     void Init();
     void Run(Environment &env);
-    
     void KeyFunction(int &key, int &action);
 
 private:
     void BoardRotationTurn(Environment &env, GameState &state);
     void UpdateTurn();
     void ControllMove();
+    void MoveAI();
 
 private:
     static GameState state;
     static Status status;
     Board board;
     ShaderLibrary shadlib;
-    Minimax solver;
+    Minimax solver = Minimax(&board.m_Grid, status, 1);
 
     friend class ImGuiLayer;
     friend class Window;

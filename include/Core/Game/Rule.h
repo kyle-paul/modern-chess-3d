@@ -12,7 +12,7 @@ public:
     Rule();
     ~Rule();
 
-    std::vector<Move> GetValidMoves(Grid &grid, const GameState &state, Status &status);
+    std::vector<Move> GetValidMoves(Grid *grid, int srcrow, int srccol, Status &status);
 
 private:
     Grid *p_Grid;
@@ -22,10 +22,10 @@ private:
     const int MAX_COL_INDEX = 8;
     const int MAX_ROW_INDEX = 8;
 
-    void GetValidMovePawn(const GameState &state, std::vector<Move> &moves, Piece *piece);
-    void GetValidMoveRook(const GameState &state, std::vector<Move> &moves, Piece *piece);
-    void GetValidMoveBishop(const GameState &state, std::vector<Move> &moves, Piece *piece);
-    void GetValidMoveKnight(const GameState &state, std::vector<Move> &moves, Piece *piece);
-    void GetValidMoveQueen(const GameState &state, std::vector<Move> &moves, Piece *piece);
-    void GetValidMoveKing(const GameState &state, std::vector<Move> &moves, Piece *piece, Status &status);
+    void GetValidMovePawn(int srcrow, int srccol, std::vector<Move> &moves, Piece *piece);
+    void GetValidMoveRook(int srcrow, int srccol, std::vector<Move> &moves, Piece *piece);
+    void GetValidMoveBishop(int srcrow, int srccol, std::vector<Move> &moves, Piece *piece);
+    void GetValidMoveKnight(int srcrow, int srccol, std::vector<Move> &moves, Piece *piece);
+    void GetValidMoveQueen(int srcrow, int srccol, std::vector<Move> &moves, Piece *piece);
+    void GetValidMoveKing(int srcrow, int srccol, std::vector<Move> &moves, Piece *piece, Status &status);
 };

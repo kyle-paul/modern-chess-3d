@@ -4,6 +4,15 @@
 #include <utility>
 #include <memory>
 
+struct MoveState 
+{
+    Piece* moved;
+    Piece* captured;
+    std::pair<int, int> start;
+    std::pair<int, int> end;
+    MoveType type;
+};
+
 class Move
 {
 public:

@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <stack>
 #include <Core/Render/Shader.h>
 #include "Core/Render/VertexArray.h"
 #include "Core/Render/Buffer.h"
@@ -15,6 +16,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
+
+struct Record
+{
+    int row, col;
+    Piece *piece;
+
+    Record(int r, int c, Piece *p) : row(r), col(c), piece(p) {}
+};
 
 class Board
 {
@@ -33,6 +42,10 @@ public:
     void RenderValidMove(const std::shared_ptr<Shader> &gridShader, const GameState &state, Status &status);
     void RenderMoveToSquare(const std::shared_ptr<Shader> &gridShader, const GameState &state);
     bool MovePlayer(const GameState &state, Status &status);
+
+    int GetEvaluation();
+    void MakeMove(Move &move);
+    void UndoMove();
 
 private:
     float vertices[36 * 6] = {
@@ -95,6 +108,8 @@ private:
     std::vector<Move> moves;
     
     int entityID = 0;
+    std::stack<MoveState> moveHistory;
+    
     friend class Game;
 
 public:
@@ -105,4 +120,6 @@ public:
 
     glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+    std::unordered_map<Piece*, std::pair<int,int>> records;
 };

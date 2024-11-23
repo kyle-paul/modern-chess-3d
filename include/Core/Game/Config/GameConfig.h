@@ -1,6 +1,14 @@
 #pragma once
 #include "Core/Game/Config/PieceConfig.h"
 
+enum class Mode
+{
+    Human = 0,
+    Minimax = 1,
+    AlphaBeta = 2,
+    DeepLearning = 3,
+};
+
 struct GameState
 {
     bool Selected = false; 
@@ -12,6 +20,8 @@ struct GameState
     
     int Turn = 1;
     PieceColor TurnColor = PieceColor::WHITE;
+    Mode mode = Mode::Human;
 
+    bool thinking = false;
     GameState() = default;
 };

@@ -1,52 +1,105 @@
 #include "Core/Machine/Minimax.h"
 #include "Core/Debug/Assert.h"
 #include <algorithm>
+#include <iostream>
 
-Minimax::Minimax(int n, int b)
-    :n(n), b(b)
+
+Minimax::Minimax(Grid *grid, Status &status, int h) 
+    : p_grid(grid), m_status(status), h(h)
 {
 
 }
 
 Minimax::~Minimax()
 {
-    
+
 }
 
-void Minimax::SetScore(const std::vector<int> &input_scores)
-{
-    scores = input_scores;
-}
+// Action Minimax::Solve(Board &board, int depth, bool isMax)
+// {
+//     // Base case (last depth)
+//     if (depth == h)
+//     {
+//         Action action;
+//         action.row = 0;
+//         action.col = 0;
+//         action.score = board.GetEvaluation();
+//         return action;
+//     }
 
-int Minimax::CalDepth(int n, int b)
-{
-    ASSERT(n >= 0 && b >= 1, "Base must be greater than 1 and n must be positive");
-    h = std::log(n) / std::log(b);
-    return h;
-}
+//     Action chosenAction;
 
-int Minimax::Solve(int depth, int node, bool isMax)
-{
-    if (depth == h)
-        return scores[node];
+//     // Maximize player
+//     if (isMax)
+//     {
+//         WARN("Max Playing");
 
-    if (isMax)
-    {
-        int res = 0;
-        for (int i=0; i<=b-1; i++)
-        {
-            res = std::max(res, Solve(depth+1, b*node+i, false));
-        }
-        return res;
-    }
+//         int maxScore = -1e9;
+//         for (auto &record : board.records)
+//         {
+//             if (record.first->GetColor() == PieceColor::BLACK)
+//             {
+//                 INFO("Piece: {0} - {1} | position = {2} - {3}", PieceTypeLog(record.first->GetType()), 
+//                 PieceColorLog(record.first->GetColor()), record.second.first, record.second.second);
 
-    else 
-    {
-        int res = 1e9;
-        for (int i=0; i<=b-1; i++)
-        {
-            res = std::min(res, Solve(depth+1, b*node+i, true));
-        }
-        return res;
-    }
-}
+//                 moves = m_Rule.GetValidMoves(p_grid, record.second.first, record.second.second, m_status);
+//                 if (moves.size() == 0) continue;
+
+//                 for (auto &move : moves)
+//                 {
+//                     auto [start_row, start_col] = move.GetOriginPos();
+//                     auto [end_row, end_col] = move.GetDestinationPos();
+//                     TRACE("Start = {0} - {1} | End = {2} - {3}", start_row, start_col, end_row, end_col);
+
+//                     board.MakeMove(move);
+//                     break;
+//                 }
+//             }
+//             std::cout << "\n";
+//         }
+
+//         return chosenAction;
+        
+//         // int maxScore = -1e9;
+//         // for (auto &[row, col, piece] : board.records[0])
+//         // {
+//         //     std::vector<Move> moves = m_Rule.GetValidMoves(row, col, piece);
+//         //     for (auto &move : moves)
+//         //     {
+//         //         board.MakeMove(move);
+//         //         Action action = Solve(board, depth+1, false);
+//         //         board.RedoMove(move);
+
+//         //         if (action.score > maxScore)
+//         //         {
+//         //             maxScore = action.score;
+//         //             chosenAction = action;
+//         //         }
+//         //     }
+//         // }
+//         // return chosenAction;
+//     }
+
+//     // Minimize player
+//     else
+//     {
+//         // int minScore = 1e9;
+//         // for (auto &[row, col, piece] : board.records[1])
+//         // {
+//         //     std::vector<Move> moves = m_Rule.GetValidMoves(row, col, piece);
+//         //     for (auto &move: moves)
+//         //     {
+//         //         board.MakeMove(move);
+//         //         Action action = Solve(board, depth+1, true);
+//         //         board.RedoMove(move);
+
+//         //         if (action.score < minScore)
+//         //         {
+//         //             minScore = action.score;
+//         //             chosenAction = action;
+//         //         }
+//         //     }
+//         // }
+//         // return chosenAction;
+//     }
+// }

@@ -20,13 +20,6 @@ void Game::Init()
     shadlib.Load("grid_shader", "assets/shaders/GridShader.glsl");
     shadlib.Load("piece_shader", "assets/shaders/PieceShader.glsl");
     board.Init();
-
-    solver = Minimax(8, 2);
-    std::vector<int> scores = {8, 7, 3, 9, 9, 8, 2, 4, 1, 8, 8, 9, 9, 9, 3, 4};
-    solver.SetScore(scores);
-    int depth = solver.CalDepth(scores.size(), 2);
-    int result = solver.Solve(0, 0, true);
-    INFO("Depth = {0} | Result = {1}", depth, result);
 }
 
 void Game::BoardRotationTurn(Environment &env, GameState &state)
@@ -93,7 +86,9 @@ void Game::UpdateTurn()
     state.NeedPromote = false;
     state.Check = false;
 
-    state.BoardRotating = true;
+    if (state.mode == Mode::Human) state.BoardRotating = true;
+    else MoveAI();
+    
     state.Turn++;
     state.TurnColor = (state.Turn & 1) ? PieceColor::WHITE : PieceColor::BLACK;
 
@@ -110,6 +105,13 @@ void Game::UpdateTurn()
     }
 }
 
+void Game::MoveAI()
+{
+    // INFO("MoveAI");
+    // state.thinking = true;
+    // Action chosenAction = solver.Solve(board, 0, true);
+    // state.thinking = false;
+}
 
 void Game::KeyFunction(int &key, int &action)
 {
@@ -193,6 +195,15 @@ void Game::KeyFunction(int &key, int &action)
     {
         ControllMove();
     }
+
+    else if (key == GLFW_KEY_Z && action == GLFW_PRESS)
+    {
+        if (state.mode == Mode::Human)
+        {
+            board.UndoMove();
+            UpdateTurn();
+        }
+    }
 }
 
 void Game::ControllMove()
@@ -218,6 +229,8 @@ void Game::ControllMove()
         else if (board.MovePlayer(state, status))
         {
             Piece *piece = board.m_Grid.GetSquare(state.DesRow, state.DesCol)->GetPiece();
+            
+            // Check the status after move
             if (piece->GetType() == PieceType::PAWN &&
                 ((piece->GetColor() == PieceColor::BLACK && state.DesRow == board.MIN_ROW_INDEX) ||
                 (piece->GetColor() == PieceColor::WHITE && state.DesRow == board.MAX_COL_INDEX))

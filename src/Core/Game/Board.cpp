@@ -37,19 +37,21 @@ const glm::mat4 Board::GetTransform() const
 
 void Board::SetInitialPieces(const PieceColor &color)
 {
-    int firstrow, secondrow;
+    int firstrow, secondrow, index;
     switch(color)
     {
         case PieceColor::WHITE:
         {
             firstrow = MIN_ROW_INDEX;
             secondrow = MIN_ROW_INDEX + 1;
+            index = 0;
             break;
         }
         case PieceColor::BLACK:
         {
             firstrow = MAX_ROW_INDEX;
             secondrow = MAX_ROW_INDEX - 1;
+            index = 1;
             break;
         }
     }   
@@ -59,25 +61,37 @@ void Board::SetInitialPieces(const PieceColor &color)
     for (int col=firstcol; col <= MAX_COL_INDEX; col++)
     {
         m_Grid.GetSquare(secondrow, col)->SetOccupied(new Piece(PieceType::PAWN, color));
+        records[m_Grid.GetSquare(secondrow, col)->GetPiece()] = {secondrow, col};
     }
 
     // ROOK
 	m_Grid.GetSquare(firstrow, firstcol)->SetOccupied(new Piece(PieceType::ROOK, color));
 	m_Grid.GetSquare(firstrow, firstcol + 7)->SetOccupied(new Piece(PieceType::ROOK, color));
 
+    records[m_Grid.GetSquare(firstrow, firstcol)->GetPiece()] = {firstrow, firstcol};
+    records[m_Grid.GetSquare(firstrow, firstcol + 7)->GetPiece()] = {firstrow, firstcol + 7};
+
 	// KNIGHT
 	m_Grid.GetSquare(firstrow, firstcol + 1)->SetOccupied(new Piece(PieceType::KNIGHT, color));
 	m_Grid.GetSquare(firstrow, firstcol + 6)->SetOccupied(new Piece(PieceType::KNIGHT, color));
+
+    records[m_Grid.GetSquare(firstrow, firstcol + 1)->GetPiece()] = {firstrow, firstcol + 1};
+    records[m_Grid.GetSquare(firstrow, firstcol + 6)->GetPiece()] = {firstrow, firstcol + 6};
 
 	// BISHOP
 	m_Grid.GetSquare(firstrow, firstcol + 2)->SetOccupied(new Piece(PieceType::BISHOP, color));
 	m_Grid.GetSquare(firstrow, firstcol + 5)->SetOccupied(new Piece(PieceType::BISHOP, color));
 
+    records[m_Grid.GetSquare(firstrow, firstcol + 2)->GetPiece()] = {firstrow, firstcol + 2};
+    records[m_Grid.GetSquare(firstrow, firstcol + 5)->GetPiece()] = {firstrow, firstcol + 5};
+    
 	// QUEEN
 	m_Grid.GetSquare(firstrow, firstcol + 3)->SetOccupied(new Piece(PieceType::QUEEN, color));
+    records[m_Grid.GetSquare(firstrow, firstcol + 3)->GetPiece()] = {firstrow, firstcol + 3};
 
 	// KING
 	m_Grid.GetSquare(firstrow, firstcol + 4)->SetOccupied(new Piece(PieceType::KING, color));
+    records[m_Grid.GetSquare(firstrow, firstcol + 4)->GetPiece()] = {firstrow, firstcol + 4};
 }
 
 void Board::RenderChessBoard()
@@ -92,6 +106,7 @@ void Board::RenderGrid(const std::shared_ptr<Shader> &gridShader, const GameStat
 
 void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const GameState &state, const Environment &env)
 {
+    if (state.thinking) return; // computer is thinking
     float z = 0.0f;
     float r, c;
     glm::vec3 rotation;
@@ -166,7 +181,7 @@ void Board::RenderValidMove(const std::shared_ptr<Shader> &gridShader, const Gam
         return;
 
     int r,c;       
-    moves = m_Rule.GetValidMoves(m_Grid, state, status);
+    moves = m_Rule.GetValidMoves(&m_Grid, state.SrcRow, state.SrcCol, status);
 
     for (auto &move : moves)
     {
@@ -194,18 +209,28 @@ bool Board::MovePlayer(const GameState &state, Status &status)
 {   
     for (auto &move : moves)
     {
-        auto DesPos = move.GetDestinationPos();
+        auto end = move.GetDestinationPos();
 
-        if (DesPos.first == state.DesRow && DesPos.second == state.DesCol)
+        if (end.first == state.DesRow && end.second == state.DesCol)
         {
             Piece* piece = move.GetMovedPiece();
-            auto OrigPos = move.GetOriginPos();
+            auto start = move.GetOriginPos();
+
+            {
+                MoveState moveState;
+                moveState.moved = piece;
+                moveState.start = start;
+                moveState.end = end;
+                moveState.type = move.GetType();
+                moveState.captured = move.GetCapturedPiece();
+                moveHistory.push(moveState);
+            }
 
             switch(move.GetType())
             {
                 case MoveType::NORMAL:
                 {
-                    if (piece->GetType() == PieceType::PAWN && (OrigPos.first - DesPos.first) == 2)
+                    if (piece->GetType() == PieceType::PAWN && (start.first - end.first) == 2)
                     {
                         status.SetPieceEnPassantable(piece->GetColor(), piece);
                     }
@@ -215,10 +240,11 @@ bool Board::MovePlayer(const GameState &state, Status &status)
                     }
                     else if (piece->GetType() == PieceType::ROOK)
                     {
-                        if (OrigPos.second == MIN_COL_INDEX) status.SetFirstColRookMove(piece->GetColor());
-                        else if (OrigPos.second == MAX_COL_INDEX) status.SetLastColRookMove(piece->GetColor());
+                        if (start.second == MIN_COL_INDEX) status.SetFirstColRookMove(piece->GetColor());
+                        else if (start.second == MAX_COL_INDEX) status.SetLastColRookMove(piece->GetColor());
                     }
-                    return m_Grid.GetSquare(DesPos.first, DesPos.second)->SetOccupied(m_Grid.GetSquare(OrigPos.first, OrigPos.second)->RemovePiece());
+                    records[piece] = {end.first, end.second};
+                    return m_Grid.GetSquare(end.first, end.second)->SetOccupied(m_Grid.GetSquare(start.first, start.second)->RemovePiece());
                 }
                 
                 case MoveType::CAPTURE:
@@ -229,21 +255,25 @@ bool Board::MovePlayer(const GameState &state, Status &status)
                     }
                     else if (piece->GetType() == PieceType::ROOK)
                     {
-                        if (OrigPos.second == MIN_COL_INDEX) status.SetFirstColRookMove(piece->GetColor());
-                        else if (OrigPos.second == MAX_COL_INDEX) status.SetLastColRookMove(piece->GetColor());
-                    }
-
-                    m_Grid.GetSquare(DesPos.first, DesPos.second)->RemovePiece();
-                    return m_Grid.GetSquare(DesPos.first, DesPos.second)->SetOccupied(m_Grid.GetSquare(OrigPos.first, OrigPos.second)->RemovePiece());
+                        if (start.second == MIN_COL_INDEX) status.SetFirstColRookMove(piece->GetColor());
+                        else if (start.second == MAX_COL_INDEX) status.SetLastColRookMove(piece->GetColor());
+                    }                    
+                    records[piece] = {end.first, end.second};
+                    m_Grid.GetSquare(end.first, end.second)->RemovePiece();
+                    return m_Grid.GetSquare(end.first, end.second)->SetOccupied(m_Grid.GetSquare(start.first, start.second)->RemovePiece());
                 }
                 
                 case MoveType::CASTLING:
                 {
-                    int RookOriginCol = ((DesPos.second < OrigPos.second) ? MIN_COL_INDEX : MAX_COL_INDEX);
-                    int RookDestCol = ((DesPos.second < OrigPos.second) ? OrigPos.second - 1 : OrigPos.second + 1);
+                    int RookOriginCol = ((end.second < start.second) ? MIN_COL_INDEX : MAX_COL_INDEX);
+                    int RookDestCol = ((end.second < start.second) ? start.second - 1 : start.second + 1);
 
-                    m_Grid.GetSquare(DesPos.first, DesPos.second)->SetOccupied(m_Grid.GetSquare(OrigPos.first, OrigPos.second)->RemovePiece());
-                    m_Grid.GetSquare(DesPos.first, RookDestCol)->SetOccupied(m_Grid.GetSquare(OrigPos.first, RookOriginCol)->RemovePiece());
+                    records[piece] = {end.first, end.second};
+                    records[m_Grid.GetSquare(start.first, RookOriginCol)->GetPiece()] = {end.first, RookDestCol};
+
+                    m_Grid.GetSquare(end.first, end.second)->SetOccupied(m_Grid.GetSquare(start.first, start.second)->RemovePiece());
+                    m_Grid.GetSquare(end.first, RookDestCol)->SetOccupied(m_Grid.GetSquare(start.first, RookOriginCol)->RemovePiece());
+
                     RookOriginCol > RookDestCol ? status.SetLastColRookMove(piece->GetColor()) : status.SetFirstColRookMove(piece->GetColor());
                     status.SetKingMove(piece->GetColor());
                     return true;
@@ -254,4 +284,86 @@ bool Board::MovePlayer(const GameState &state, Status &status)
         }
     }
     return false;
+}
+
+
+int Board::GetEvaluation()
+{
+    // evaluate the current state of the board
+    // create another replication of current board
+    return 0;
+}
+
+void Board::MakeMove(Move &move)
+{
+    Piece* piece = move.GetMovedPiece();
+    auto start = move.GetOriginPos();
+    auto end = move.GetDestinationPos();
+
+    MoveState moveState;
+    moveState.moved = piece;
+    moveState.start = start;
+    moveState.end = end;
+    moveState.type = move.GetType();
+    moveState.captured = move.GetCapturedPiece();
+    
+    switch(move.GetType())
+    {
+        case(MoveType::NORMAL):
+        {
+            moveHistory.push(moveState);
+            m_Grid.GetSquare(end.first, end.second)->SetOccupied(m_Grid.GetSquare(start.first, start.second)->RemovePiece());
+            break;
+        }
+        case(MoveType::CAPTURE):
+        {
+            m_Grid.GetSquare(end.first, end.second)->RemovePiece();
+            m_Grid.GetSquare(end.first, end.second)->SetOccupied(m_Grid.GetSquare(start.first, start.second)->RemovePiece());
+            moveHistory.push(moveState);
+            break;
+        }
+        case MoveType::CASTLING:
+        {
+            int RookOriginCol = ((end.second < start.second) ? MIN_COL_INDEX : MAX_COL_INDEX);
+            int RookDestCol = ((end.second < start.second) ? start.second - 1 : start.second + 1);
+            
+            m_Grid.GetSquare(end.first, end.second)->SetOccupied(m_Grid.GetSquare(start.first, start.second)->RemovePiece());
+            m_Grid.GetSquare(end.first, RookDestCol)->SetOccupied(m_Grid.GetSquare(start.first, RookOriginCol)->RemovePiece());
+    
+            moveHistory.push(moveState);
+        }
+    }
+}
+
+void Board::UndoMove()
+{
+    if (moveHistory.empty())
+        return;
+
+    MoveState last = moveHistory.top();
+    moveHistory.pop();
+
+    // INFO("Piece: {0} - {1} | start = {2} - {3} | end = {4} - {5}", PieceTypeLog(last.moved->GetType()), 
+    //      PieceColorLog(last.moved->GetColor()), last.start.first, last.start.second, last.end.first, last.end.second);
+
+    // Normal (include castling move of king)
+    m_Grid.GetSquare(last.start.first, last.start.second)->SetOccupied(
+        m_Grid.GetSquare(last.end.first, last.end.second)->RemovePiece()
+    );
+
+    // Capture
+    if (last.captured != nullptr) {
+        m_Grid.GetSquare(last.end.first, last.end.second)->SetOccupied(last.captured);
+    }
+
+    // Castling
+    if (last.type == MoveType::CASTLING) 
+    {
+        int RookDestCol = ((last.end.second < last.start.second) ? last.start.second - 1 : last.start.second + 1);
+        int RookOriginCol = ((last.end.second < last.start.second) ? MIN_COL_INDEX : MAX_COL_INDEX);
+
+        m_Grid.GetSquare(last.start.first, RookOriginCol)->SetOccupied(
+            m_Grid.GetSquare(last.start.first, RookDestCol)->RemovePiece()
+        );
+    }
 }

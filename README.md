@@ -16,6 +16,7 @@
 - [x] Add the selection by keyboard events
 - [x] Abstract the game rules
 - [x] Add the feature of selecting entity by clicking
+- [x] Add the Undo moves feature with Stack
 - [ ] Add the mode playing with machine
 - [ ] Game State Serialization
 - [ ] Add UI stuffs for users

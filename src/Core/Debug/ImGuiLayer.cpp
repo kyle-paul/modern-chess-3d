@@ -52,12 +52,16 @@ void ImGuiLayer::End()
 }
 
 static const char* turns[]{"Black", "White"};
-static const char* modes[]{"Two players", "Classic machine", "Deep learning"};
-static int mode;
+static const char* modes[]{"Human", "Minimax", "AlphaBeta", "DeepLearning"};
+static int mode = 1;
 
 void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
 {
     Window *window = Window::GetInstance();
+    auto &windowSpec = window->m_WindSpec;
+    auto &env = window->m_Env;
+
+    window->m_Game.state.mode = (Mode)mode;
 
     fb->Bind();
     auto [mx, my] = ImGui::GetMousePos();
@@ -87,10 +91,6 @@ void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
     fb->Unbind();
 
     ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
-    
-    auto &windowSpec = window->m_WindSpec;
-    auto &env = window->m_Env;
-
     ImGui::Begin("Debug Console");
     ImGui::ColorEdit4("Background color", windowSpec.BgColor);
 

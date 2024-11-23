@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include "Core/Debug/Assert.h"
 
 enum class PieceType : int
 {
@@ -21,3 +23,6 @@ struct PieceProps
 	PieceType Type;
 	PieceColor Color;
 };
+
+const std::string PieceTypeLog(const PieceType &type);
+const std::string PieceColorLog(const PieceColor &color);
