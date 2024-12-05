@@ -18,8 +18,11 @@
 - [x] Add the feature of selecting entity by clicking
 - [x] Add the Undo moves feature with Stack
 - [x] Add the mode playing with machine (Minimax)
-- [ ] Alpha Beta Pruning for larger depth search
-- [ ] Game State Serialization
 - [ ] Add UI stuffs for users
-- [ ] Train Reinforcment Learning with Pytorch
-- [ ] Deploy the model with OnnxRuntime
+- [ ] Create easy mode (random moves)
+- [ ] Alpha Beta Pruning for larger depth search (hard mode)
+- [ ] Debug my rules for checkmate, stalemate
+- [ ] Redo my undo move (another stack)
+- [ ] Game State Serialization
+- [ ] Design options for users
+- [ ] Sound effects -> add controll to it
