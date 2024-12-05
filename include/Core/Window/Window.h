@@ -2,6 +2,7 @@
 #include "Core/Window/WindowConfig.h"
 #include "Core/Debug/ImGuiLayer.h"
 #include "Core/Game/Game.h"
+#include <stb_image.h>
 
 class Window
 {

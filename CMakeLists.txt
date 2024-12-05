@@ -54,6 +54,9 @@ add_executable(${PROJECT_NAME}
     src/Backends/OpenGL/OpenGLBuffer.cpp
 
     vendor/glad/src/glad.c
+    vendor/gl2d/src/gl2d.cpp
+    vendor/gl2d/src/gl2dParticleSystem.cpp
+    vendor/glui/glui.cpp
     vendor/imgui/imgui.cpp
     vendor/imgui/imgui_demo.cpp
 	vendor/imgui/imgui_draw.cpp
@@ -67,9 +70,12 @@ add_executable(${PROJECT_NAME}
 include_directories(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     vendor/glad/include
+    vendor/stb
     vendor/imgui
     vendor/imgui/backends
     vendor/spdlog/include
+    vendor/gl2d/include
+    vendor/glui
     libs/glfw-build/install/include
 	libs/glm-build/install/include
 )
