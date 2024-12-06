@@ -13,7 +13,7 @@ struct WindowSpec
 
     WindowSpec(const std::string& title = "3D Chess Game",
 			   int width = 1200, int height = 810, 
-               float aspect = 1200.0f / 810.0f)
+               float aspect = 1500.0f / 900.0f)
         : Title(title), Width(width), Height(height), Aspect(aspect)
     { 
         

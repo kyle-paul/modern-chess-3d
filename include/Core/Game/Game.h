@@ -7,7 +7,7 @@
 #include "Core/Game/Config/GameConfig.h"
 #include "Core/Game/Board.h"
 #include "Core/Game/Status.h"
-#include "Core/Machine/Minimax.h"
+#include "Core/Machine/Machine.h"
 
 class Game
 {
@@ -30,7 +30,7 @@ private:
     static Status status;
     Board board;
     ShaderLibrary shadlib;
-    Minimax solver = Minimax(&board.m_Grid, status, 1);
+    Machine solver = Machine(&board.m_Grid, status, 1, 1);
 
     friend class ImGuiLayer;
     friend class Window;

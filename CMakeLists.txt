@@ -31,6 +31,7 @@ add_executable(${PROJECT_NAME}
     src/Core/Render/Camera.cpp
     src/Core/Render/Shader.cpp
     src/Core/Render/VertexArray.cpp
+    src/Core/Render/Texture.cpp
     src/Core/Render/Buffer.cpp
     src/Core/Render/Model.cpp
     src/Core/Render/Quad.cpp
@@ -45,13 +46,14 @@ add_executable(${PROJECT_NAME}
     src/Core/Game/Rule.cpp
     src/Core/Game/Status.cpp
 
-    src/Core/Machine/Minimax.cpp
+    src/Core/Machine/Machine.cpp
 
     src/Backends/OpenGL/OpenGLRenderer.cpp
     src/Backends/OpenGL/OpenGLFramebuffer.cpp
     src/Backends/OpenGL/OpenGLShader.cpp
     src/Backends/OpenGL/OpenGLVertexArray.cpp
     src/Backends/OpenGL/OpenGLBuffer.cpp
+    src/Backends/OpenGL/OpenGLTexture2D.cpp
 
     vendor/glad/src/glad.c
     vendor/gl2d/src/gl2d.cpp

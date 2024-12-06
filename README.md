@@ -18,11 +18,11 @@
 - [x] Add the feature of selecting entity by clicking
 - [x] Add the Undo moves feature with Stack
 - [x] Add the mode playing with machine (Minimax)
-- [ ] Add UI stuffs for users
-- [ ] Create easy mode (random moves)
-- [ ] Alpha Beta Pruning for larger depth search (hard mode)
+- [x] Add UI stuffs for users
+- [x] Create easy mode (random moves)
+- [x] Alpha Beta Pruning for larger depth search (hard mode)
+- [ ] Design options for users (landscape, board color, lighting)
 - [ ] Debug my rules for checkmate, stalemate
 - [ ] Redo my undo move (another stack)
 - [ ] Game State Serialization
-- [ ] Design options for users
 - [ ] Sound effects -> add controll to it

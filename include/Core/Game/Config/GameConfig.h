@@ -4,9 +4,10 @@
 enum class Mode
 {
     Human = 0,
-    Minimax = 1,
-    AlphaBeta = 2,
-    DeepLearning = 3,
+    Easy = 1,
+    Minimax = 2,
+    AlphaBeta = 3,
+    DeepLearning = 4,
 };
 
 struct GameState

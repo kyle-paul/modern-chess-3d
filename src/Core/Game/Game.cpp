@@ -109,8 +109,17 @@ void Game::MoveAI()
 {
     INFO("MoveAI");
     state.thinking = true;
-    Move initial = Move(MoveType::NORMAL, 0,0,0,0, nullptr, nullptr);
-    Action chosen = solver.Solve(board, 0, initial, true);
+    Move initial = Move(MoveType::NORMAL, 0, 0, 0, 0, nullptr, nullptr);
+
+    Action chosen;
+    if (state.mode == Mode::Easy)
+        chosen = solver.RandomMove(board);
+    else if (state.mode == Mode::Minimax)
+        chosen = solver.Minimax(board, 0, initial, true);
+    else if (state.mode == Mode::AlphaBeta)
+        chosen = solver.AlphaBeta(board, -1e9, 1e9, 0, initial, true);
+    else if (state.mode == Mode::DeepLearning)
+        chosen = solver.Minimax(board, 0, initial, true);
 
     INFO("Piece = {0} - {1} | start = {1} - {2} | end = {3} - {4}", 
          PieceTypeLog(chosen.move.GetMovedPiece()->GetType()),  

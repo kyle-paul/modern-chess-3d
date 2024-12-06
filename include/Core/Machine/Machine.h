@@ -13,17 +13,19 @@ struct Action
     Action() : move(Move(MoveType::NORMAL, 0,0,0,0, nullptr, nullptr)), score(0) {}
 };
 
-class Minimax
+class Machine
 {
 public:
-    Minimax() = default;
-    Minimax(Grid *grid, Status &status, int h);
-    ~Minimax();
+    Machine() = default;
+    Machine(Grid *grid, Status &status, int h, int h2);
+    ~Machine();
 
-    Action Solve(Board &board, int depth, Move &move, bool isMax);
+    Action Minimax(Board &board, int depth, Move &move, bool isMax);
+    Action AlphaBeta(Board &board, int alpha, int beta, int depth, Move &move, bool isMax);
+    Action RandomMove(Board &board);
 
 private:
-    int h;
+    int h, h2;
     Rule m_Rule;
     Grid *p_grid;
     Status m_status;

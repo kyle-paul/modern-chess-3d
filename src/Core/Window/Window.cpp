@@ -59,7 +59,7 @@ void Window::Init()
 
     Renderer::Init();
     m_Game.Init();
-    ImGuiLayer::Init(m_Window);
+    m_Gui.Init(m_Window);
 
     FramebufferConfig fbspec;
     fbspec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
@@ -68,11 +68,11 @@ void Window::Init()
 	fb = Framebuffer::Create(fbspec);
 }
 
+
 void Window::Run()
 {
     while (!glfwWindowShouldClose(m_Window))
-    {
-        // Framebuffer resizeFramebufferTextureFormat::RED_INTEGER
+    {        
         int display_w, display_h;
         glfwGetFramebufferSize(m_Window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
@@ -84,9 +84,9 @@ void Window::Run()
         fb->ClearAttachment(1, -1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(m_WindSpec.BgColor[0], m_WindSpec.BgColor[1], 
-                     m_WindSpec.BgColor[2], m_WindSpec.BgColor[3]);
+                    m_WindSpec.BgColor[2], m_WindSpec.BgColor[3]);
 
-        // // Run the Game
+        // Run the Game
         m_Game.Run(m_Env);
         fb->Unbind();
 
