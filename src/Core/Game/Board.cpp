@@ -362,6 +362,8 @@ void Board::UndoMove()
     MoveState last = moveHistory.top();
     moveHistory.pop();
 
+    moveFuture.push(last);
+
     // INFO("Piece: {0} - {1} | start = {2} - {3} | end = {4} - {5}", PieceTypeLog(last.moved->GetType()), 
     //      PieceColorLog(last.moved->GetColor()), last.start.first, last.start.second, last.end.first, last.end.second);
 
@@ -389,4 +391,21 @@ void Board::UndoMove()
         );
         records[m_Grid.GetSquare(last.start.first, RookOriginCol)->GetPiece()] = {last.start.first, RookOriginCol};
     }
+}
+
+void Board::RedoMove()
+{
+    if (moveFuture.empty())
+        return;
+
+    MoveState move = moveFuture.top();
+    moveFuture.pop();
+
+    m_Grid.GetSquare(move.end.first, move.end.second)->SetOccupied(
+        m_Grid.GetSquare(move.start.first, move.start.second)->RemovePiece()
+    );
+
+    records[move.moved] = {move.end.first, move.end.second};
+
+    // Capture
 }

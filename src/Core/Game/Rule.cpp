@@ -1,4 +1,5 @@
 #include "Core/Game/Rule.h"
+#include "Core/Game/Board.h"
 
 Rule::Rule()
 {
@@ -336,4 +337,47 @@ std::vector<Move> Rule::GetValidMoves(Grid *grid, int srcrow, int srccol, Status
     }
 
     return std::move(moves);
+}
+
+bool Rule::isCheckState(Status &status, Board* board, PieceColor color)
+{
+    int kingRow, kingCol;
+    std::vector<Move> moves;
+    Piece *actPiece;
+
+    for (auto &record : board->records)
+    {
+        if (record.first->GetType() == PieceType::KING && record.first->GetColor() == color)
+        {
+            kingRow, kingCol = record.second.first, record.second.second;
+            break;
+        }
+    }
+
+    for (auto &record : board->records)
+    {
+        if (record.first->GetColor() != color)
+        {
+            moves = GetValidMoves(&board->m_Grid, record.second.first, record.second.second, status);
+            for (auto &move : moves)
+            {
+                if (move.GetDestinationPos().first == kingRow && move.GetDestinationPos().second == kingCol)
+                {
+                    return true;
+                }
+            }
+            moves.clear();
+        }
+    }
+    return false;
+}
+
+bool Rule::isCheckMateState(Status* status, Board* board, PieceColor color)
+{
+    return false;   
+}
+
+bool Rule::pawnPromotion(Board* board, int row, int col, PieceType promoteTo)
+{
+    return false;
 }

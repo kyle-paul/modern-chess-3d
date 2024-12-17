@@ -19,7 +19,10 @@ void main()
 in vec3 v_color;
 out vec4 color;
 
+uniform vec3 overlay_color;
+
 void main()
 {
-    color = vec4(v_color, 1.0);
+    vec3 blended_color = mix(v_color, overlay_color, 0.5);
+    color = vec4(blended_color, 1.0);
 }

@@ -7,6 +7,8 @@
 #include "Core/Game/Config/GameConfig.h"
 #include "Core/Game/Board.h"
 #include "Core/Game/Status.h"
+#include "Core/Game/Sound.h"
+#include "Core/Game/Serialization.h"
 #include "Core/Machine/Machine.h"
 
 class Game
@@ -31,6 +33,8 @@ private:
     Board board;
     ShaderLibrary shadlib;
     Machine solver = Machine(&board.m_Grid, status, 1, 1);
+    Sound sound;
+    Serialization seri;
 
     friend class ImGuiLayer;
     friend class Window;

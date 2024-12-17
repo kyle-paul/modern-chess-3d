@@ -20,6 +20,8 @@ void Game::Init()
     shadlib.Load("grid_shader", "assets/shaders/GridShader.glsl");
     shadlib.Load("piece_shader", "assets/shaders/PieceShader.glsl");
     board.Init();
+    // sound.Init();
+    // sound.Play("assets/audio/lofi-2.wav");
 }
 
 void Game::BoardRotationTurn(Environment &env, GameState &state)
@@ -64,6 +66,7 @@ void Game::Run(Environment &env)
     shadlib.Get("board_shader")->Bind();
     shadlib.Get("board_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
     shadlib.Get("board_shader")->SetMat4("model", board.GetTransform());
+    shadlib.Get("board_shader")->SetFloat3("overlay_color", board.color);
     board.RenderChessBoard();
     shadlib.Get("board_shader")->UnBind();
 
@@ -228,6 +231,21 @@ void Game::KeyFunction(int &key, int &action)
     else if (key == GLFW_KEY_K && action == GLFW_PRESS)
     {
         INFO("Eval = {0}", board.GetEvaluation());
+    }
+
+    else if (key == GLFW_KEY_R && action == GLFW_PRESS)
+    {
+        if (state.mode == Mode::Human)
+        {
+            board.RedoMove();
+            UpdateTurn();
+        }
+        else board.RedoMove();
+    }
+
+    else if (key == GLFW_KEY_B && action == GLFW_PRESS)
+    {
+        seri.save(&state, &board, &status);
     }
 }
 

@@ -45,7 +45,8 @@ add_executable(${PROJECT_NAME}
     src/Core/Game/Move.cpp
     src/Core/Game/Rule.cpp
     src/Core/Game/Status.cpp
-
+    src/Core/Game/Sound.cpp
+    src/Core/Game/Serialization.cpp
     src/Core/Machine/Machine.cpp
 
     src/Backends/OpenGL/OpenGLRenderer.cpp
@@ -78,6 +79,7 @@ include_directories(${PROJECT_NAME}
     vendor/spdlog/include
     vendor/gl2d/include
     vendor/glui
+    vendor/bass
     libs/glfw-build/install/include
 	libs/glm-build/install/include
 )
@@ -95,6 +97,7 @@ list(APPEND CMAKE_PREFIX_PATH libs/glm-build/install/share/glm)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(OpenAL REQUIRED)
 
 # Link the libraries to the target
-target_link_libraries(${PROJECT_NAME} glfw glm::glm ${OPENGL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} OpenAL::OpenAL glfw glm::glm ${OPENGL_LIBRARIES})

@@ -6,6 +6,8 @@
 #include "Core/Game/Grid.h"
 #include <vector>
 
+class Board;
+
 class Rule
 {
 public:
@@ -13,6 +15,9 @@ public:
     ~Rule();
 
     std::vector<Move> GetValidMoves(Grid *grid, int srcrow, int srccol, Status &status);
+    bool isCheckState(Status &status, Board* board, PieceColor color);
+    bool isCheckMateState(Status* status, Board* board, PieceColor color);
+    bool pawnPromotion(Board* board, int row, int col, PieceType promoteTo);
 
 private:
     Grid *p_Grid;

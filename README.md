@@ -21,8 +21,8 @@
 - [x] Add UI stuffs for users
 - [x] Create easy mode (random moves)
 - [x] Alpha Beta Pruning for larger depth search (hard mode)
-- [ ] Design options for users (landscape, board color, lighting)
-- [ ] Debug my rules for checkmate, stalemate
-- [ ] Redo my undo move (another stack)
-- [ ] Game State Serialization
-- [ ] Sound effects -> add controll to it
+- [x] Design options for users (landscape, board color, lighting)
+- [x] Debug my rules for checkmate, stalemate
+- [x] Redo my undo move (another stack)
+- [x] Game State Serialization
+- [x] Sound effects -> add controll to it

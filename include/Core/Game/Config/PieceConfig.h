@@ -26,3 +26,6 @@ struct PieceProps
 
 const std::string PieceTypeLog(const PieceType &type);
 const std::string PieceColorLog(const PieceColor &color);
+
+const PieceType PieceTypeLoad(const std::string &type);
+const PieceColor PieceColorLoad(const std::string &color);

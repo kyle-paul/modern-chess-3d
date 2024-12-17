@@ -46,6 +46,7 @@ public:
     int GetEvaluation();
     void MakeMove(Move &move);
     void UndoMove();
+    void RedoMove();
 
 private:
     float vertices[36 * 6] = {
@@ -109,8 +110,11 @@ private:
     
     int entityID = 0;
     std::stack<MoveState> moveHistory;
+    std::stack<MoveState> moveFuture;
     
     friend class Game;
+    friend class Rule;
+    friend class Serialization;
 
 public:
     const int MIN_COL_INDEX = 1;
@@ -120,6 +124,7 @@ public:
 
     glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec4 color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
 
     std::unordered_map<Piece*, std::pair<int,int>> records;
 };

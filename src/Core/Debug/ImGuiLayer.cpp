@@ -5,6 +5,7 @@
 #include "imgui_impl_opengl3.h"
 #include <glm/gtc/type_ptr.hpp>
 
+
 glm::vec2 ImGuiLayer::m_ViewportSize;
 ImFont* ImGuiLayer::boldFont;
 ImFont* ImGuiLayer::menuFont;
@@ -140,7 +141,7 @@ void ImGuiLayer::End()
 
 static const char* turns[]{"Black", "White"};
 static const char* modes[]{"Human", "Easy", "Minimax", "AlphaBeta", "DeepLearning"};
-static int mode = 1;
+static int mode = 0;
 
 void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
 {
@@ -198,6 +199,7 @@ void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
             // Change color of board
             ImGui::DragFloat3("Board position", glm::value_ptr(window->m_Game.board.position), 0.1f, -20.0f, 20.f);
             ImGui::DragFloat3("Board rotation", glm::value_ptr(window->m_Game.board.rotation), 0.1f, -45.0f, 45.0f);
+            ImGui::ColorEdit4("Board color", glm::value_ptr(window->m_Game.board.color));
             ImGui::TreePop();
         }
 
@@ -279,15 +281,17 @@ void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
         ImGui::Dummy(ImVec2(0.0f, button_padding));
 
         ImGui::SetCursorPosX((window_width - button_width) / 2.0f);
-        if (ImGui::Button("Continue Game", ImVec2(button_width, 0))) 
+        if (ImGui::Button("Load Game", ImVec2(button_width, 0))) 
         {
-
+            // Open Dialog
+            window->m_Game.seri.load(&window->m_Game.state, &window->m_Game.board, &window->m_Game.status);
+            window->m_Running = true;
         }
 
         ImGui::SetCursorPosX((window_width - button_width) / 2.0f);
         if (ImGui::Button("Settings", ImVec2(button_width, 0))) 
         {
-
+            
         }
         ImGui::Dummy(ImVec2(0.0f, button_padding));
 
