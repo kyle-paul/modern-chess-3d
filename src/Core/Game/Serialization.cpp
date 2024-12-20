@@ -40,9 +40,9 @@ Serialization::~Serialization()
     
 }
 
-void Serialization::save(GameState *state, Board *board, Status *status)
+void Serialization::save(GameState *state, Board *board, Status *status, const std::string &filePathName)
 {
-    std::ofstream file("data/default.txt");
+    std::ofstream file(filePathName);
     if (!file.is_open())
         ERROR("Can not open file");
 
@@ -69,6 +69,9 @@ void Serialization::save(GameState *state, Board *board, Status *status)
 
     // Board color   
     file << "BoardColor: " << board->boardColor.x << " " << board->boardColor.y << " " << board->boardColor.z << " " << board->boardColor.w << '\n';
+    file << "FirstPlayerColor: " << board->firstPlayerColor.x << " " << board->firstPlayerColor.y << " " << board->firstPlayerColor.z << '\n';
+    file << "SecPlayerColor: " << board->secPlayerColor.x << " " << board->secPlayerColor.y << " " << board->secPlayerColor.z << " " << '\n';
+
     for (auto &record : board->records)
     {
         file << "Piece: " << PieceTypeLog(record.first->GetType()) << " " << PieceColorLog(record.first->GetColor())  << " " << record.second.first << " " << record.second.second << '\n';
@@ -76,9 +79,9 @@ void Serialization::save(GameState *state, Board *board, Status *status)
     file.close();
 }
 
-void Serialization::load(GameState *state, Board *board, Status *status)
+void Serialization::load(GameState *state, Board *board, Status *status, const std::string &filePathName)
 {
-    std::ifstream file("data/default.txt");
+    std::ifstream file(filePathName);
     if (!file.is_open())
         ERROR("Can not open file");
 
@@ -129,9 +132,13 @@ void Serialization::load(GameState *state, Board *board, Status *status)
             state->mode = ModeLoad(mode); // Load Mode
         }
         else if (line.find("BoardColor:") != std::string::npos)
-        {
             stream >> label >> board->boardColor.x >> board->boardColor.y >> board->boardColor.z >> board->boardColor.w;
-        }
+
+        else if (line.find("FirstPlayerColor:") != std::string::npos)
+            stream >> label >> board->firstPlayerColor.x >> board->firstPlayerColor.y >> board->firstPlayerColor.z;
+
+        else if (line.find("SecPlayerColor:") != std::string::npos)
+            stream >> label >> board->secPlayerColor.x >> board->secPlayerColor.y >> board->secPlayerColor.z;
 
         else if (line.find("Piece:") != std::string::npos)
         {

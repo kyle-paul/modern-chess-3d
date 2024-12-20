@@ -10,8 +10,8 @@ public:
     Serialization();
     ~Serialization();
 
-    void save(GameState *state, Board *board, Status *status);
-    void load(GameState *state, Board *board, Status *status);
+    void save(GameState *state, Board *board, Status *status, const std::string &filePathName);
+    void load(GameState *state, Board *board, Status *status, const std::string &filePathName);
 
 private:
         

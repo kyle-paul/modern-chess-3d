@@ -4,7 +4,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <glm/gtc/type_ptr.hpp>
-
+#include <ImGuiFileDialog.h>
+#include <iostream>
 
 glm::vec2 ImGuiLayer::m_ViewportSize;
 ImFont* ImGuiLayer::boldFont;
@@ -47,7 +48,7 @@ void ImGuiLayer::Init(GLFWwindow *window)
     ImVec4 *colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-    colors[ImGuiCol_WindowBg] = ImVec4(0.10f, 0.10f, 0.10f, 0.5f);
+    colors[ImGuiCol_WindowBg] = ImVec4(0.10f, 0.10f, 0.10f, 0.9f);
     colors[ImGuiCol_ChildBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
     colors[ImGuiCol_PopupBg] = ImVec4(0.19f, 0.19f, 0.19f, 0.92f);
     colors[ImGuiCol_Border] = ImVec4(0.19f, 0.19f, 0.19f, 0.29f);
@@ -221,7 +222,28 @@ void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
             ImGui::Combo("Color turn", &window->m_Game.state.Turn, turns, IM_ARRAYSIZE(turns));
             ImGui::Checkbox("Board rotating", &window->m_Game.state.BoardRotating);
             ImGui::TreePop();
-        } 
+        }
+
+        if (ImGui::Button("Save your game")) 
+        {
+            IGFD::FileDialogConfig config;config.path = ".";
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".txt", config);
+        }
+
+        // display
+        if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) 
+        {
+            if (ImGuiFileDialog::Instance()->IsOk()) 
+            {
+                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+
+                window->m_Game.seri.save(&window->m_Game.state, &window->m_Game.board, &window->m_Game.status, filePathName);
+            }
+            
+            // close
+            ImGuiFileDialog::Instance()->Close();
+        }
 
         ImGui::End();
     }
@@ -285,11 +307,27 @@ void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
         ImGui::SetCursorPosX((window_width - button_width) / 2.0f);
         if (ImGui::Button("Load Game", ImVec2(button_width, 0))) 
         {
-            // Open Dialog
-            window->m_Game.seri.load(&window->m_Game.state, &window->m_Game.board, &window->m_Game.status);
-            window->m_Running = true;
+            IGFD::FileDialogConfig config;config.path = ".";
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".txt", config);
+        }
+        ImGui::PopFont();
+
+        // Open Dialog
+        if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) 
+        {
+            if (ImGuiFileDialog::Instance()->IsOk()) 
+            {
+                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+
+                window->m_Game.seri.load(&window->m_Game.state, &window->m_Game.board, &window->m_Game.status, filePathName);
+                window->m_Running = true;
+            }
+            // close
+            ImGuiFileDialog::Instance()->Close();
         }
 
+        ImGui::PushFont(menuFont);
         ImGui::SetCursorPosX((window_width - button_width) / 2.0f);
         if (ImGui::Button("Settings", ImVec2(button_width, 0))) 
         {

@@ -67,6 +67,7 @@ add_executable(${PROJECT_NAME}
 	vendor/imgui/imgui_widgets.cpp
     vendor/imgui/backends/imgui_impl_opengl3.cpp
     vendor/imgui/backends/imgui_impl_glfw.cpp
+    vendor/ImGuiFileDialog/ImGuiFileDialog.cpp
 )
 
 # Add included directories
@@ -79,7 +80,7 @@ include_directories(${PROJECT_NAME}
     vendor/spdlog/include
     vendor/gl2d/include
     vendor/glui
-    vendor/bass
+    vendor/ImGuiFileDialog
     libs/glfw-build/install/include
 	libs/glm-build/install/include
 )

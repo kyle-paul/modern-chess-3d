@@ -10,3 +10,6 @@
 [submodule "vendor/spdlog"]
 	path = vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "vendor/ImGuiFileDialog"]
+	path = vendor/ImGuiFileDialog
+	url = https://github.com/aiekick/ImGuiFileDialog.git

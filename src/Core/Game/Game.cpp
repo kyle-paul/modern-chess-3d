@@ -242,11 +242,6 @@ void Game::KeyFunction(int &key, int &action)
         }
         else board.RedoMove();
     }
-
-    else if (key == GLFW_KEY_B && action == GLFW_PRESS)
-    {
-        seri.save(&state, &board, &status);
-    }
 }
 
 void Game::ControllMove()

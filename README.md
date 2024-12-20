@@ -49,7 +49,7 @@ cmake --build build --parallel <your-cpu-threads>
 - [x] Created the game state.  
 - [x] Abstracted the mesh loading.  
 - [x] Added all chess players to the board and controlled the lighting.  
-- [x] Abstracted the game layers (Game → Board → Square → Piece).  
+- [x] Abstracted the game layers (Game → Board → Square → Piece → Grid).  
 - [x] Added selection using keyboard events.  
 - [x] Abstracted the game rules.  
 - [x] Added the feature to select entities by clicking with framebuffer.
@@ -64,3 +64,4 @@ cmake --build build --parallel <your-cpu-threads>
 - [x] Added the Redo feature.  
 - [x] Added sound effects using OpenAL.  
 - [x] Implemented game state serialization and deserialization.  
+- [x] Added the File Dialog for file selection.

@@ -1,50 +1,52 @@
 Selected: 0
 SelectedRow: 8
-SelectedCol: 1
-SrcRow: 2
-SrcCol: 7
-DesRow: 4
-DesCol: 7
+SelectedCol: 7
+SrcRow: 0
+SrcCol: 0
+DesRow: 0
+DesCol: 0
 CloseGame: 0
 BoardRotating: 0
 Check: 0
 CheckMate: 0
 NeedPromote: 0
 Verify: 0
-Turn: 4
-TurnColor: BLACK
+Turn: 1
+TurnColor: WHITE
 Mode: HUMAN
 Thinking: 0
-BoardColor: 0.137261 0.111291 0.60733 1
+BoardColor: 0.199556 0.724606 0.732984 1
+FirstPlayerColor: 0.937173 0.783987 0.608426
+SecPlayerColor: 0.712042 0.443628 0.443628 
 Piece: KING BLACK 8 5
 Piece: QUEEN BLACK 8 4
 Piece: BISHOP BLACK 8 6
-Piece: PAWN WHITE 2 4
-Piece: BISHOP BLACK 8 3
 Piece: ROOK WHITE 1 8
-Piece: KNIGHT BLACK 8 7
-Piece: PAWN WHITE 2 1
 Piece: KNIGHT BLACK 8 2
 Piece: ROOK BLACK 8 1
+Piece: KNIGHT WHITE 1 7
+Piece: QUEEN WHITE 1 4
+Piece: PAWN BLACK 7 7
+Piece: PAWN WHITE 2 4
+Piece: PAWN WHITE 2 3
+Piece: BISHOP WHITE 1 6
+Piece: PAWN BLACK 7 1
+Piece: PAWN WHITE 2 6
 Piece: BISHOP WHITE 1 3
 Piece: PAWN BLACK 7 8
-Piece: PAWN WHITE 2 3
 Piece: PAWN WHITE 2 2
-Piece: KNIGHT WHITE 1 2
-Piece: PAWN BLACK 7 6
-Piece: KNIGHT WHITE 3 6
-Piece: QUEEN WHITE 1 4
-Piece: KING WHITE 1 5
+Piece: PAWN WHITE 2 1
+Piece: KNIGHT BLACK 8 7
 Piece: PAWN WHITE 2 5
-Piece: PAWN BLACK 7 7
-Piece: BISHOP WHITE 1 6
-Piece: PAWN WHITE 2 6
-Piece: PAWN BLACK 7 1
-Piece: PAWN WHITE 4 7
-Piece: PAWN BLACK 5 2
+Piece: KING WHITE 1 5
+Piece: PAWN WHITE 2 7
+Piece: PAWN BLACK 7 2
 Piece: PAWN WHITE 2 8
 Piece: PAWN BLACK 7 3
 Piece: ROOK WHITE 1 1
 Piece: PAWN BLACK 7 4
 Piece: PAWN BLACK 7 5
+Piece: KNIGHT WHITE 1 2
+Piece: PAWN BLACK 7 6
 Piece: ROOK BLACK 8 8
+Piece: BISHOP BLACK 8 3
