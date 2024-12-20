@@ -199,7 +199,9 @@ void ImGuiLayer::OnRender(std::shared_ptr<Framebuffer> &fb)
             // Change color of board
             ImGui::DragFloat3("Board position", glm::value_ptr(window->m_Game.board.position), 0.1f, -20.0f, 20.f);
             ImGui::DragFloat3("Board rotation", glm::value_ptr(window->m_Game.board.rotation), 0.1f, -45.0f, 45.0f);
-            ImGui::ColorEdit4("Board color", glm::value_ptr(window->m_Game.board.color));
+            ImGui::ColorEdit4("Board color", glm::value_ptr(window->m_Game.board.boardColor));
+            ImGui::ColorEdit4("First player color", glm::value_ptr(window->m_Game.board.firstPlayerColor));
+            ImGui::ColorEdit4("Second player color", glm::value_ptr(window->m_Game.board.secPlayerColor));
             ImGui::TreePop();
         }
 

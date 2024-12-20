@@ -66,7 +66,7 @@ void Game::Run(Environment &env)
     shadlib.Get("board_shader")->Bind();
     shadlib.Get("board_shader")->SetMat4("projection_view", env.camera.GetProjectionViewMatrix());
     shadlib.Get("board_shader")->SetMat4("model", board.GetTransform());
-    shadlib.Get("board_shader")->SetFloat3("overlay_color", board.color);
+    shadlib.Get("board_shader")->SetFloat3("overlay_color", board.boardColor);
     board.RenderChessBoard();
     shadlib.Get("board_shader")->UnBind();
 

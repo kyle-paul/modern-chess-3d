@@ -131,13 +131,13 @@ void Board::RenderPieces(const std::shared_ptr<Shader> &pieceShader,  const Game
                     case PieceColor::WHITE:
                     {
                         rotation = glm::vec3(0, 0, glm::radians(180.0f));
-                        pieceShader->SetFloat3("v_color", glm::vec3(0.9f, 0.9f, 0.9f));
+                        pieceShader->SetFloat3("v_color", firstPlayerColor);
                         break;
                     }
                     case PieceColor::BLACK:
                     {
                         rotation = glm::vec3(0, 0, glm::radians(360.0f));
-                        pieceShader->SetFloat3("v_color", glm::vec3(0.2f, 0.2f, 0.2f));
+                        pieceShader->SetFloat3("v_color", secPlayerColor);
                         break;
                     }
                 }

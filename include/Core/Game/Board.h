@@ -124,7 +124,9 @@ public:
 
     glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec4 color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+    glm::vec4 boardColor = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+    glm::vec3 firstPlayerColor = glm::vec3(0.9f, 0.9f, 0.9f);
+    glm::vec3 secPlayerColor = glm::vec3(0.2f, 0.2f, 0.2f);
 
     std::unordered_map<Piece*, std::pair<int,int>> records;
 };

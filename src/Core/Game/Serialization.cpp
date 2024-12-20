@@ -20,11 +20,14 @@ const std::string ModeLog(const Mode &mode)
 const Mode ModeLoad(const std::string &mode)
 {
 	if (mode == "HUMAN") return Mode::Human;
-    else if (mode == "EASY") return Mode::Human;
+    else if (mode == "EASY") return Mode::Easy;
     else if (mode == "MINIMAX") return Mode::Minimax;
     else if (mode == "ALPHABETA") return Mode::AlphaBeta;
     else if (mode == "DEEPLEARNING") return Mode::DeepLearning;
-    else ASSERT(false, "Invalid Mode");
+    else {
+        ASSERT(false, "Invalid Mode");
+        return Mode::Human;
+    }
 }
 
 Serialization::Serialization()
@@ -65,7 +68,7 @@ void Serialization::save(GameState *state, Board *board, Status *status)
     file << "Thinking: " << state->thinking << '\n'; 
 
     // Board color   
-    file << "BoardColor: " << board->color.x << " " << board->color.y << " " << board->color.z << " " << board->color.w << '\n';
+    file << "BoardColor: " << board->boardColor.x << " " << board->boardColor.y << " " << board->boardColor.z << " " << board->boardColor.w << '\n';
     for (auto &record : board->records)
     {
         file << "Piece: " << PieceTypeLog(record.first->GetType()) << " " << PieceColorLog(record.first->GetColor())  << " " << record.second.first << " " << record.second.second << '\n';
@@ -127,7 +130,7 @@ void Serialization::load(GameState *state, Board *board, Status *status)
         }
         else if (line.find("BoardColor:") != std::string::npos)
         {
-            stream >> label >> board->color.x >> board->color.y >> board->color.z >> board->color.w;
+            stream >> label >> board->boardColor.x >> board->boardColor.y >> board->boardColor.z >> board->boardColor.w;
         }
 
         else if (line.find("Piece:") != std::string::npos)
