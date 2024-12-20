@@ -35,7 +35,6 @@ cmake --build build --parallel <your-cpu-threads>
 |`Space`|Select piece<br>Move piece<br>Cancel move|
 |`Z`|Undo last move|
 |`R`|Redo last move|
-|`B`|Serialize current game state|
 
 ## Tasks Completed
 - [x] Added `spdlog` for debugging the code.  
