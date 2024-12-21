@@ -2,6 +2,9 @@
 
 This is a chess game set in a simulated 3D environment, built on a core foundation of OpenGL. While Vulkan is not currently implemented, it is planned for future updates, as the backend renderer is designed to be agnostic. The game supports two-player mode for human opponents as well as gameplay against AI agents, with three difficulty levels: easy, medium, and hard. Players can move pieces using either the keyboard or direct mouse selection within the 3D scene. Additionally, players can customize the board color, adjust environmental lighting, and modify the camera view to analyze the match from different angles.
 
+[**Video Demo**](https://youtu.be/0tOOrvqqWPE)
+![](assets/ui/imgs/demo.png)
+
 ## Getting Started
 ### Clone the Repository
 First, you need to clone the repository and init all git submodules
